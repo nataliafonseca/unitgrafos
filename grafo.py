@@ -1,3 +1,6 @@
+from prettytable import PrettyTable
+
+
 class Grafo:
     def __init__(self, q_vertices, arestas, digrafo):
         self.__q_vertices = q_vertices
@@ -37,9 +40,12 @@ class Grafo:
 
     def print_matriz_adjacencia(self):
         grafo = self.matriz_adjacencia()
-        print(f"*  {str([i+1 for i in range(self.__q_vertices)]).strip('[]')}")
+
+        x = PrettyTable(["*"]+[str(i+1) for i in range(self.__q_vertices)])
+        x.padding_width = 1
         for i in range(self.__q_vertices):
-            print(f"{i+1} {grafo[i]}")
+            x.add_row([i+1]+grafo[i])
+        print(x)
 
     def busca_profundidade(self, vertice=1):
         pilha = [vertice]
