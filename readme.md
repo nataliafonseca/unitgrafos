@@ -29,6 +29,6 @@ Informe as arestas do grafo (separe os vertices adjacentes por traços e os pare
 ```
 
 ## Autores:
-Felipe Carvalho de Gois
-Natália Braga da Fonseca
-Sande Andrade de Souza Costa
+* Felipe Carvalho de Gois
+* Natália Braga da Fonseca
+* Sande Andrade de Souza Costa
