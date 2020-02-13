@@ -3,7 +3,7 @@ class Grafo:
         self.__q_vertices = q_vertices
         self.__arestas = arestas
 
-    def __estrutura_adjacencia(self):
+    def estrutura_adjacencia(self):
         grafo = {}
         for i in range(self.__q_vertices):
             grafo.update({i+1: []})
@@ -16,11 +16,11 @@ class Grafo:
         return grafo
 
     def get_estrutura_adjacencia(self):
-        grafo = self.__estrutura_adjacencia()
+        grafo = self.estrutura_adjacencia()
         for i in grafo:
             print(f"{i} -> {grafo[i]}")
 
-    def __matriz_adjacencia(self):
+    def matriz_adjacencia(self):
         grafo = []
         for i in range(self.__q_vertices):
             grafo.append([0] * self.__q_vertices)
@@ -33,7 +33,7 @@ class Grafo:
         return grafo
 
     def get_matriz_adjacencia(self):
-        grafo = self.__matriz_adjacencia()
+        grafo = self.matriz_adjacencia()
         print(f"*  {str([i+1 for i in range(self.__q_vertices)]).strip('[]')}")
         for i in range(self.__q_vertices):
             print(f"{i+1} {grafo[i]}")
