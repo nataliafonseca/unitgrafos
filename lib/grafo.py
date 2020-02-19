@@ -7,13 +7,11 @@ color()
 
 
 class Grafo:
-    __contador = 0
 
     def __init__(self, q_vertices, arestas, digrafo):
         self.__q_vertices = q_vertices
         self.__arestas = arestas
         self.__digrafo = digrafo
-        Grafo.__contador += 1
 
     @staticmethod
     def definir_grafo():
