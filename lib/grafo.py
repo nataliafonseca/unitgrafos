@@ -1,25 +1,81 @@
 from prettytable import PrettyTable
 from colorama import Fore, init as color
+from datetime import datetime
+from lib.interface import *
 
 color()
 
 
-def definir_grafo():
-    q_vertices = int(input("Informe a quantidade de vertices do grafo: "))
-    arestas = input("Informe as arestas do grafo (deve-se separar os vertices "
-                    "adjacentes por traços e cada par de vertices deve ser "
-                    "separado por virgula. Por exemplo: '1-2, 1-3, 1-4, "
-                    "2-3'): ")
-    digrafo = bool(int(input("O grafo é direcionado? "
-                             "Digite 1 se sim ou 0 se não: ")))
-    return Grafo(q_vertices, arestas, digrafo)
-
-
 class Grafo:
+    __contador = 0
+
     def __init__(self, q_vertices, arestas, digrafo):
         self.__q_vertices = q_vertices
         self.__arestas = arestas
         self.__digrafo = digrafo
+        Grafo.__contador += 1
+
+    @staticmethod
+    def definir_grafo():
+        q_vertices = int(input("Informe a quantidade de vertices do grafo: "))
+        arestas = input("Informe as arestas do grafo (deve-se separar os "
+                        "vertices adjacentes por traços e cada par de "
+                        "vertices deve ser separado por virgula. Por exemplo: "
+                        "'1-2, 1-3, 1-4, 2-3'): ")
+        digrafo = bool(int(input("O grafo é direcionado? "
+                                 "Digite 1 se sim ou 0 se não: ")))
+
+        return Grafo(q_vertices, arestas, digrafo)
+
+    @staticmethod
+    def cadastrar_grafo(grafo):
+        arquivo_grafos = open("grafos.txt", "a", encoding="UTF-8")
+
+        id_grafo = input("Se desejar, informe um nome para o seu grafo, "
+                         "se não, aperte ENTER e ele será salvo com um nome "
+                         "genérico: ")
+        if not id_grafo:
+            id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
+
+        grafodic = {"id": id_grafo, "vertices": grafo.__q_vertices,
+                    "arestas": grafo.__arestas, "digrafo": grafo.__digrafo}
+        arquivo_grafos.write(f"{grafodic}\n")
+
+        arquivo_grafos.close()
+
+    @staticmethod
+    def listar_grafos_salvos():
+        arquivo_grafos = open("grafos.txt", "r", encoding="UTF-8")
+
+        for line in arquivo_grafos:
+            grafo = eval(line)
+            cabecalho(Fore.BLUE + f"{grafo['id']}" + Fore.RESET)
+            print(f"Quantidade de vertices: {grafo['vertices']}")
+            print(f"Arestas: {grafo['arestas']}")
+            print(f"Digrafo: {grafo['digrafo']}")
+            print()
+
+        arquivo_grafos.close()
+
+    @staticmethod
+    def resgatar_grafo():
+        Grafo.listar_grafos_salvos()
+
+        id_r = input("Informe o nome do grafo que deseja recuperar (para "
+                     "evitar erros, copie o nome da lista acima): ").strip()
+
+        arquivo_grafos = open("grafos.txt", "r", encoding="UTF-8")
+
+        for line in arquivo_grafos:
+            grafo = eval(line)
+            if grafo['id'] == id_r:
+                q_vertices = grafo['vertices']
+                arestas = grafo['arestas']
+                digrafo = grafo['digrafo']
+                return Grafo(q_vertices, arestas, digrafo)
+        print("Grafo não encontrado, tente novamente")
+
+        arquivo_grafos.close()
 
     def estrutura_adjacencia(self):
         grafo = {}
@@ -63,6 +119,7 @@ class Grafo:
             x.add_row([f"{Fore.YELLOW}{i + 1}{Fore.RESET}"] + grafo[i])
         print(x)
 
+    # TODO: revisar e consertar as funções de busca
     def busca_profundidade(self, vertice=1):
         pilha = [vertice]
         vertices_visitados = [vertice]
