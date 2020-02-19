@@ -1,6 +1,18 @@
 from prettytable import PrettyTable
 from colorama import Fore, init as color
+
 color()
+
+
+def definir_grafo():
+    q_vertices = int(input("Informe a quantidade de vertices do grafo: "))
+    arestas = input("Informe as arestas do grafo (deve-se separar os vertices "
+                    "adjacentes por traços e cada par de vertices deve ser "
+                    "separado por virgula. Por exemplo: '1-2, 1-3, 1-4, "
+                    "2-3'): ")
+    digrafo = bool(int(input("O grafo é direcionado? "
+                             "Digite 1 se sim ou 0 se não: ")))
+    return Grafo(q_vertices, arestas, digrafo)
 
 
 class Grafo:
@@ -12,7 +24,7 @@ class Grafo:
     def estrutura_adjacencia(self):
         grafo = {}
         for i in range(self.__q_vertices):
-            grafo.update({i+1: []})
+            grafo.update({i + 1: []})
         arestas = self.__arestas.split(",")
         for par in arestas:
             i, j = par.split("-")
@@ -44,11 +56,11 @@ class Grafo:
         grafo = self.matriz_adjacencia()
 
         x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
-                        [f"{Fore.YELLOW}{i+1}{Fore.RESET}"
+                        [f"{Fore.YELLOW}{i + 1}{Fore.RESET}"
                          for i in range(self.__q_vertices)])
         x.padding_width = 1
         for i in range(self.__q_vertices):
-            x.add_row([f"{Fore.YELLOW}{i+1}{Fore.RESET}"] + grafo[i])
+            x.add_row([f"{Fore.YELLOW}{i + 1}{Fore.RESET}"] + grafo[i])
         print(x)
 
     def busca_profundidade(self, vertice=1):
