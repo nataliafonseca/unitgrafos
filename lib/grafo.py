@@ -29,53 +29,45 @@ class Grafo:
 
     @staticmethod
     def cadastrar_grafo(grafo):
-        arquivo_grafos = open("grafos.txt", "a", encoding="UTF-8")
+        with open("grafos.txt", "a", encoding="UTF-8") as arquivo_grafos:
+            id_grafo = input("Se desejar, informe um nome para o seu grafo, "
+                             "se não, aperte ENTER e ele será salvo com um "
+                             "nome genérico: ")
+            if not id_grafo:
+                id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
 
-        id_grafo = input("Se desejar, informe um nome para o seu grafo, "
-                         "se não, aperte ENTER e ele será salvo com um nome "
-                         "genérico: ")
-        if not id_grafo:
-            id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
-
-        grafodic = {"id": id_grafo, "vertices": grafo.__q_vertices,
-                    "arestas": grafo.__arestas, "digrafo": grafo.__digrafo}
-        arquivo_grafos.write(f"{grafodic}\n")
-
-        arquivo_grafos.close()
+            grafodic = {"id": id_grafo, "vertices": grafo.__q_vertices,
+                        "arestas": grafo.__arestas, "digrafo": grafo.__digrafo}
+            arquivo_grafos.write(f"{grafodic}\n")
 
     @staticmethod
     def listar_grafos_salvos():
-        arquivo_grafos = open("grafos.txt", "r", encoding="UTF-8")
 
-        for line in arquivo_grafos:
-            grafo = eval(line)
-            cabecalho(Fore.BLUE + f"{grafo['id']}" + Fore.RESET)
-            print(f"Quantidade de vertices: {grafo['vertices']}")
-            print(f"Arestas: {grafo['arestas']}")
-            print(f"Digrafo: {grafo['digrafo']}")
-            print()
-
-        arquivo_grafos.close()
+        with open("grafos.txt", "r", encoding="UTF-8") as arquivo_grafos:
+            for line in arquivo_grafos:
+                grafo = eval(line)
+                cabecalho(Fore.BLUE + f"{grafo['id']}" + Fore.RESET)
+                print(f"Quantidade de vertices: {grafo['vertices']}")
+                print(f"Arestas: {grafo['arestas']}")
+                print(f"Digrafo: {grafo['digrafo']}")
+                print()
 
     @staticmethod
     def resgatar_grafo():
         Grafo.listar_grafos_salvos()
 
-        id_r = input("Informe o nome do grafo que deseja recuperar (para "
-                     "evitar erros, copie o nome da lista acima): ").strip()
+        with open("grafos.txt", "r", encoding="UTF-8") as arquivo_grafos:
+            id_r = input("Informe a id do grafo que deseja recuperar (para "
+                         "evitar erros, copie da lista acima): ").strip()
 
-        arquivo_grafos = open("grafos.txt", "r", encoding="UTF-8")
-
-        for line in arquivo_grafos:
-            grafo = eval(line)
-            if grafo['id'] == id_r:
-                q_vertices = grafo['vertices']
-                arestas = grafo['arestas']
-                digrafo = grafo['digrafo']
-                return Grafo(q_vertices, arestas, digrafo)
-        print("Grafo não encontrado, tente novamente")
-
-        arquivo_grafos.close()
+            for line in arquivo_grafos:
+                grafo = eval(line)
+                if grafo['id'] == id_r:
+                    q_vertices = grafo['vertices']
+                    arestas = grafo['arestas']
+                    digrafo = grafo['digrafo']
+                    return Grafo(q_vertices, arestas, digrafo)
+            print("Grafo não encontrado, tente novamente")
 
     def estrutura_adjacencia(self):
         grafo = {}
