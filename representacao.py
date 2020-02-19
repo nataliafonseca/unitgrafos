@@ -1,4 +1,5 @@
-from grafo import Grafo
+from lib.grafo import Grafo
+# from colorama import Fore
 
 # q_vertices = int(input("Informe a quantidade de vertices do grafo: "))
 # arestas = input("Informe as arestas do grafo (deve-se separar os vertices "
@@ -14,14 +15,17 @@ digrafo = False
 
 grafo = Grafo(q_vertices, arestas, digrafo)
 
-print()
+# print(Fore.BLUE)
 print("****************** MATRIZ DE ADJACENCIA *******************")
-print()
+# print(Fore.RESET)
 grafo.print_matriz_adjacencia()
 print()
+# print(Fore.BLUE)
 print("***************** ESTRUTURA DE ADJACENCIA *****************")
-print()
+# print(Fore.RESET)
 grafo.print_estrutura_adjacencia()
 
-print()
+# print(Fore.BLUE)
 input("Entre ENTER para finalizar.")
+input()
+# print(Fore.RESET)

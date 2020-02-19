@@ -1,4 +1,6 @@
 from prettytable import PrettyTable
+from colorama import Fore, init as color
+color()
 
 
 class Grafo:
@@ -23,7 +25,7 @@ class Grafo:
     def print_estrutura_adjacencia(self):
         grafo = self.estrutura_adjacencia()
         for i in grafo:
-            print(f"{i} -> {grafo[i]}")
+            print(f"{Fore.YELLOW}{i} -> {Fore.RESET}{grafo[i]}")
 
     def matriz_adjacencia(self):
         grafo = []
@@ -41,10 +43,12 @@ class Grafo:
     def print_matriz_adjacencia(self):
         grafo = self.matriz_adjacencia()
 
-        x = PrettyTable(["*"]+[str(i+1) for i in range(self.__q_vertices)])
+        x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
+                        [f"{Fore.YELLOW}{i+1}{Fore.RESET}"
+                         for i in range(self.__q_vertices)])
         x.padding_width = 1
         for i in range(self.__q_vertices):
-            x.add_row([i+1]+grafo[i])
+            x.add_row([f"{Fore.YELLOW}{i+1}{Fore.RESET}"] + grafo[i])
         print(x)
 
     def busca_profundidade(self, vertice=1):
