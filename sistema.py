@@ -24,8 +24,8 @@ while True:
         print()
         cabecalho("Opção 1 - Definir Grafo")
         grafo = Grafo.definir_grafo()
-        cadastrar = bool(input("Deseja salvar seu grafo? digite 0 para não ou "
-                               "1 para sim: "))
+        cadastrar = bool(input("Deseja salvar seu grafo? digite 1 para sim ou "
+                               "0 para não: "))
         if cadastrar:
             Grafo.cadastrar_grafo(grafo)
         print()

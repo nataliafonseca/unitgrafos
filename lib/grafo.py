@@ -23,7 +23,7 @@ class Grafo:
                         "vertices deve ser separado por virgula. Por exemplo: "
                         "'1-2, 1-3, 1-4, 2-3'): ")
         digrafo = bool(int(input("O grafo é direcionado? "
-                                 "Digite 1 se sim ou 0 se não: ")))
+                                 "Digite 1 para sim ou 0 para não: ")))
 
         return Grafo(q_vertices, arestas, digrafo)
 
