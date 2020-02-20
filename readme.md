@@ -43,7 +43,9 @@ O grafo é direcionado? Digite 1 para sim ou 0 para não:
 0
 ```
 
-Alternativamente, os valores podem ser incluidos diretamente no arquivo "grafos.txt" e resgatados utilizando a opção "2 - Resgatar Grafo"
+Ao final, o programa perguntará se você deseja salvar o grafo para utilizar posteriormente.
+
+Alternativamente, os valores podem ser incluidos diretamente no arquivo "grafos.json" e resgatados utilizando a opção "2 - Resgatar Grafo"
 
 ## Autores:
 * Felipe Carvalho de Gois
