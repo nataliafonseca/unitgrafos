@@ -1,4 +1,4 @@
-from lib.grafo import *
+from model.grafo import *
 from time import sleep
 
 # Grafo de Exemplo - será utilizado se o usuário não cadastrar um grafo.
