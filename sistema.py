@@ -11,7 +11,7 @@ arestas = "1-2, 1-3, 2-3, 2-5, 2-6, 3-4, 3-6, 4-7, 5-6, 5-9, 5-10, 6-7," \
           "6-10, 6-11, 7-8, 7-12, 8-12, 9-10, 10-11"
 digrafo = False
 grafo_exemplo = Grafo(q_vertices, arestas, digrafo)
-grafo = False
+grafo = None
 
 while True:
     resposta = menu(["Definir Grafo",
@@ -27,7 +27,7 @@ while True:
         cadastrar = bool(input("Deseja salvar seu grafo? digite 1 para sim ou "
                                "0 para não: "))
         if cadastrar:
-            Grafo.cadastrar_grafo(grafo)
+            grafo.cadastrar_grafo()
         print()
 
     elif resposta == 2:

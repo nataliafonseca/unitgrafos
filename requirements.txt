@@ -1,2 +1,3 @@
+jsonpickle
 colorama==0.4.3
 prettytable==0.7.2

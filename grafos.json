@@ -1,0 +1,2 @@
+{"_Grafo__arestas": "1-2", "_Grafo__digrafo": true, "_Grafo__id_grafo": "20200220090116", "_Grafo__q_vertices": 2, "py/object": "lib.grafo.Grafo"}
+{"_Grafo__arestas": "1-2, 2-3, 3-4", "_Grafo__digrafo": false, "_Grafo__id_grafo": "20200220090557", "_Grafo__q_vertices": 4, "py/object": "lib.grafo.Grafo"}

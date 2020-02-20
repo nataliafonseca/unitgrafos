@@ -1,7 +1,10 @@
+from collections import namedtuple
+
 from prettytable import PrettyTable
 from colorama import Fore, init as color
 from datetime import datetime
 from lib.interface import *
+import jsonpickle
 
 color()
 
@@ -12,6 +15,7 @@ class Grafo:
         self.__q_vertices = q_vertices
         self.__arestas = arestas
         self.__digrafo = digrafo
+        self.__id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
 
     @staticmethod
     def definir_grafo():
@@ -25,46 +29,38 @@ class Grafo:
 
         return Grafo(q_vertices, arestas, digrafo)
 
-    @staticmethod
-    def cadastrar_grafo(grafo):
-        with open("grafos.txt", "a", encoding="UTF-8") as arquivo_grafos:
-            id_grafo = input("Se desejar, informe um nome para o seu grafo, "
-                             "se não, aperte ENTER e ele será salvo com um "
-                             "nome genérico: ")
-            if not id_grafo:
-                id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    def cadastrar_grafo(self):
+        id_grafo_p = input("Se desejar, informe um nome para o seu grafo,"
+                           " se não, aperte ENTER e ele será salvo com um"
+                           " nome genérico: ")
+        if id_grafo_p:
+            self.__id_grafo = id_grafo_p
 
-            grafodic = {"id": id_grafo, "vertices": grafo.__q_vertices,
-                        "arestas": grafo.__arestas, "digrafo": grafo.__digrafo}
-            arquivo_grafos.write(f"{grafodic}\n")
+        with open("grafos.json", "a") as grafos_json:
+            grafos_json.write(jsonpickle.encode(self) + "\n")
 
     @staticmethod
     def listar_grafos_salvos():
-
-        with open("grafos.txt", "r", encoding="UTF-8") as arquivo_grafos:
-            for line in arquivo_grafos:
-                grafo = eval(line)
-                cabecalho(Fore.BLUE + f"{grafo['id']}" + Fore.RESET)
-                print(f"Quantidade de vertices: {grafo['vertices']}")
-                print(f"Arestas: {grafo['arestas']}")
-                print(f"Digrafo: {grafo['digrafo']}")
+        with open("grafos.json", "r") as grafos_json:
+            for line in grafos_json:
+                grafo = jsonpickle.decode(line)
+                cabecalho(Fore.BLUE + f"{grafo.__id_grafo}" + Fore.RESET)
+                print(f"Quantidade de vertices: {grafo.__q_vertices}")
+                print(f"Arestas: {grafo.__arestas}")
+                print(f"Digrafo: {grafo.__digrafo}")
                 print()
 
     @staticmethod
     def resgatar_grafo():
         Grafo.listar_grafos_salvos()
-
-        with open("grafos.txt", "r", encoding="UTF-8") as arquivo_grafos:
-            id_r = input("Informe a id do grafo que deseja recuperar (para "
+        with open("grafos.json", "r") as grafos_json:
+            id_r = input("Informe a id do grafo que deseja resgatar (para "
                          "evitar erros, copie da lista acima): ").strip()
 
-            for line in arquivo_grafos:
-                grafo = eval(line)
-                if grafo['id'] == id_r:
-                    q_vertices = grafo['vertices']
-                    arestas = grafo['arestas']
-                    digrafo = grafo['digrafo']
-                    return Grafo(q_vertices, arestas, digrafo)
+            for line in grafos_json:
+                grafo = jsonpickle.decode(line)
+                if grafo.__id_grafo == id_r:
+                    return grafo
             print("Grafo não encontrado, tente novamente")
 
     def estrutura_adjacencia(self):
