@@ -1,6 +1,6 @@
 from lib.interface import *
 from time import sleep
-from colorama import init as color
+from colorama import Fore, init as color
 from lib.grafo import Grafo
 
 color()
