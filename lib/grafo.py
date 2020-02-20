@@ -59,14 +59,18 @@ class Grafo:
     def resgatar_grafo():
         Grafo.listar_grafos_salvos()
         with open("grafos.json", "r") as grafos_json:
-            id_r = input("Informe a id do grafo que deseja resgatar (para "
-                         "evitar erros, copie da lista acima): ").strip()
+            print(Fore.BLUE + "Informe a id do grafo que deseja resgatar (para"
+                              " evitar erros, copie da lista acima): "
+                  + Fore.RESET)
+            id_r = input().strip()
 
             for line in grafos_json:
                 grafo = decode(line)
                 if grafo.__id_grafo == id_r:
                     return grafo
-            print("Grafo não encontrado, tente novamente")
+            print()
+            print(Fore.RED + "Grafo não encontrado, tente novamente."
+                  + Fore.RESET)
 
     def estrutura_adjacencia(self):
         grafo = {}
