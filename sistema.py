@@ -1,17 +1,14 @@
-from lib.interface import *
+from lib.grafo import *
 from time import sleep
-from colorama import Fore, init as color
-from lib.grafo import Grafo
-
-color()
 
 # Grafo de Exemplo - será utilizado se o usuário não cadastrar um grafo.
 q_vertices = 12
 arestas = "1-2, 1-3, 2-3, 2-5, 2-6, 3-4, 3-6, 4-7, 5-6, 5-9, 5-10, 6-7," \
           "6-10, 6-11, 7-8, 7-12, 8-12, 9-10, 10-11"
 digrafo = False
-grafo_exemplo = Grafo(q_vertices, arestas, digrafo)
 grafo = None
+grafo_exemplo = Grafo(q_vertices, arestas, digrafo)
+
 
 while True:
     resposta = menu(["Definir Grafo",
@@ -24,8 +21,10 @@ while True:
         print()
         cabecalho("Opção 1 - Definir Grafo")
         grafo = Grafo.definir_grafo()
-        cadastrar = bool(input("Deseja salvar seu grafo? digite 1 para sim ou "
-                               "0 para não: "))
+        print(Fore.BLUE + "Deseja salvar seu grafo? digite 1 para sim ou 0 "
+                          "para não:" + Fore.RESET)
+        cadastrar = bool(input())
+        print()
         if cadastrar:
             grafo.cadastrar_grafo()
         print()
@@ -34,6 +33,7 @@ while True:
         print()
         cabecalho("Opção 2 - Resgatar Grafo Salvo")
         grafo = Grafo.resgatar_grafo()
+        print()
 
     elif resposta == 3:
         print()
@@ -68,6 +68,7 @@ while True:
         break
 
     else:
-        print('\033[31m' + "ERRO: Por favor, digite um número inteiro entre "
-                           "1 e 5" + '\033[m')
+        print(Fore.RED + "ERRO: Por favor, digite um número inteiro entre "
+                         "1 e 5" + Fore.RESET)
+
     sleep(1)

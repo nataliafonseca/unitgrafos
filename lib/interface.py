@@ -1,4 +1,5 @@
 from colorama import init as color, Fore
+color()
 
 
 def leiaint(msg):

@@ -1,11 +1,8 @@
-from collections import namedtuple
-
-from prettytable import PrettyTable
-from colorama import Fore, init as color
-from datetime import datetime
 from lib.interface import *
-import jsonpickle
-
+from prettytable import PrettyTable
+from datetime import datetime
+from jsonpickle import encode, decode
+from colorama import Fore, init as color
 color()
 
 
@@ -19,31 +16,39 @@ class Grafo:
 
     @staticmethod
     def definir_grafo():
-        q_vertices = int(input("Informe a quantidade de vertices do grafo: "))
-        arestas = input("Informe as arestas do grafo (deve-se separar os "
-                        "vertices adjacentes por traços e cada par de "
-                        "vertices deve ser separado por virgula. Por exemplo: "
-                        "'1-2, 1-3, 1-4, 2-3'): ")
-        digrafo = bool(int(input("O grafo é direcionado? "
-                                 "Digite 1 para sim ou 0 para não: ")))
+        print(Fore.BLUE + "Informe a quantidade de vertices do grafo:"
+              + Fore.RESET)
+        q_vertices = int(input())
+        print()
+        print(Fore.BLUE + "Informe as arestas do grafo (deve-se separar os "
+                          "vertices adjacentes por traços e cada par de "
+                          "vertices deve ser separado por virgula. Por "
+                          "exemplo: '1-2, 1-3, 1-4, 2-3'): " + Fore.RESET)
+        arestas = input()
+        print()
+        print(Fore.BLUE + "O grafo é direcionado? Digite 1 para sim ou 0 para "
+                          "não:" + Fore.RESET)
+        digrafo = bool(int(input()))
+        print()
 
         return Grafo(q_vertices, arestas, digrafo)
 
     def cadastrar_grafo(self):
-        id_grafo_p = input("Se desejar, informe um nome para o seu grafo,"
-                           " se não, aperte ENTER e ele será salvo com um"
-                           " nome genérico: ")
+        print(Fore.BLUE + "Se desejar, informe um nome para o seu grafo, se "
+                          "não, aperte ENTER e ele será salvo com um nome "
+                          "genérico:" + Fore.RESET)
+        id_grafo_p = input()
         if id_grafo_p:
             self.__id_grafo = id_grafo_p
 
         with open("grafos.json", "a") as grafos_json:
-            grafos_json.write(jsonpickle.encode(self) + "\n")
+            grafos_json.write(encode(self) + "\n")
 
     @staticmethod
     def listar_grafos_salvos():
         with open("grafos.json", "r") as grafos_json:
             for line in grafos_json:
-                grafo = jsonpickle.decode(line)
+                grafo = decode(line)
                 cabecalho(Fore.BLUE + f"{grafo.__id_grafo}" + Fore.RESET)
                 print(f"Quantidade de vertices: {grafo.__q_vertices}")
                 print(f"Arestas: {grafo.__arestas}")
@@ -58,7 +63,7 @@ class Grafo:
                          "evitar erros, copie da lista acima): ").strip()
 
             for line in grafos_json:
-                grafo = jsonpickle.decode(line)
+                grafo = decode(line)
                 if grafo.__id_grafo == id_r:
                     return grafo
             print("Grafo não encontrado, tente novamente")
