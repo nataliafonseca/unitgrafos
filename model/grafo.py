@@ -113,22 +113,26 @@ class Grafo:
             for trio in arestas:
                 i, j, p = trio.split("-")
                 i, j, p = int(i.strip()), int(j.strip()), int(p.strip())
-                grafo[i].append((j, p))
+                grafo[i].append({'vertice_id': j, 'peso': p})
                 if not self.__digrafo:
-                    grafo[j].append((i, p))
+                    grafo[j].append({'vertice_id': i, 'peso': p})
         else:
             for par in arestas:
                 i, j = par.split("-")
                 i, j = int(i.strip()), int(j.strip())
-                grafo[i].append((j, 1))
+                grafo[i].append({'vertice_id': j, 'peso': 1})
                 if not self.__digrafo:
-                    grafo[j].append((i, 1))
+                    grafo[j].append({'vertice_id': i, 'peso': 1})
         return grafo
 
     def print_estrutura_adjacencia(self):
         grafo = self.estrutura_adjacencia()
         for i in grafo:
-            print(f"{Fore.YELLOW}{i} -> {Fore.RESET}{grafo[i]}")
+            print(f"{Fore.YELLOW}{i}", end=' -> ')
+            print(f"{Fore.RESET}| ", end='')
+            for j in grafo[i]:
+                print(f"{Fore.RESET}{j['vertice_id']}_P{j['peso']}", end=' | ')
+            print()
 
     def matriz_adjacencia(self):
         grafo = []
@@ -163,30 +167,83 @@ class Grafo:
             x.add_row([f"{Fore.YELLOW}{i + 1}{Fore.RESET}"] + grafo[i])
         print(x)
 
-    # TODO: revisar e consertar as funções de busca
-    def busca_profundidade(self, vertice=1):
-        pilha = [vertice]
-        vertices_visitados = [vertice]
+    def get_adjacentes(self, vertice):
         grafo = self.estrutura_adjacencia()
+        adjacentes = []
+        for i in grafo[vertice]:
+            adjacentes.append(i['vertice_id'])
+        return adjacentes
 
-        while pilha:
-            if grafo[pilha[-1]][0] not in vertices_visitados:
-                vertices_visitados.append(grafo[pilha[-1]][0])
-                pilha.append(grafo[pilha[-1]][0])
-            pilha.pop(-1)
+    def regular(self):
+        regular = True
+        for i in range(self.__q_vertices):
+            if len(self.get_adjacentes(1)) != len(self.get_adjacentes(i)):
+                regular = False
+        return regular
 
-        return vertices_visitados
+    def completo(self):
+        completo = True
+        for i in range(self.__q_vertices):
+            if len(self.get_adjacentes(i)) != self.__q_vertices - 1:
+                completo = False
+        return completo
 
-    def busca_largura(self, vertice=1):
+    def conexo(self):
+        conexo = True
+        if self.busca_largura()['q_componentes'] > 1:
+            conexo = False
+        return conexo
+
+    def busca_profundidade(self, vertice_inicial=1):
+        vertice = vertice_inicial
+        pilha = []
+        vertices_visitados = []
+        vertices_explorados = []
+        q_componentes = 0
+
+        while len(vertices_visitados) < self.__q_vertices:
+            if q_componentes > 0:
+                for i in range(1, self.__q_vertices + 1):
+                    if i not in vertices_visitados:
+                        vertice = i
+            pilha.append(vertice)
+            vertices_visitados.append(vertice)
+            while pilha:
+                vertice = pilha[-1]
+                pilha.pop(-1)
+                vertices_explorados.append(vertice)
+                for w in self.get_adjacentes(vertice):
+                    if w not in vertices_visitados:
+                        vertices_visitados.append(w)
+                        pilha.append(w)
+            q_componentes += 1
+
+        return {'visitados': vertices_visitados,
+                'q_componentes': q_componentes}
+
+    def busca_largura(self, vertice_inicial=1):
+        vertice = vertice_inicial
         fila = [vertice]
         vertices_visitados = [vertice]
-        grafo = self.estrutura_adjacencia()
+        vertices_explorados = []
+        q_componentes = 0
 
-        while fila:
-            for vertice in grafo[fila[0]]:
-                if vertice not in vertices_visitados:
-                    vertices_visitados.append(vertice)
-                    fila.append(vertice)
-            fila.pop(0)
+        while len(vertices_visitados) < self.__q_vertices:
+            if q_componentes > 0:
+                for i in range(1, self.__q_vertices + 1):
+                    if i not in vertices_visitados:
+                        vertice = i
+            fila.append(vertice)
+            vertices_visitados.append(vertice)
+            while fila:
+                vertice = fila[0]
+                fila.pop(0)
+                vertices_explorados.append(vertice)
+                for w in self.get_adjacentes(vertice):
+                    if w not in vertices_visitados:
+                        vertices_visitados.append(w)
+                        fila.append(w)
+            q_componentes += 1
 
-        return vertices_visitados
+        return {'visitados': vertices_visitados,
+                'q_componentes': q_componentes}
