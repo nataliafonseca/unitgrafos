@@ -17,7 +17,7 @@ def leiaint(msg):
             return n
 
 
-def linha(tam=42):
+def linha(tam=50):
     return "-" * tam
 
 

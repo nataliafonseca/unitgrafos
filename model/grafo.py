@@ -125,13 +125,23 @@ class Grafo:
                     grafo[j].append({'vertice_id': i, 'peso': 1})
         return grafo
 
+    # def print_estrutura_adjacencia(self):
+    #     grafo = self.estrutura_adjacencia()
+    #     for i in grafo:
+    #         print(f"{Fore.YELLOW}{i}", end=' -> ')
+    #         print(f"{Fore.RESET}| ", end='')
+    #         for j in grafo[i]:
+    #             print(f"{Fore.RESET}{j['vertice_id']}_P{j['peso']}",
+    #             end=' | ')
+    #         print()
+
     def print_estrutura_adjacencia(self):
         grafo = self.estrutura_adjacencia()
+        width = len(str(max(grafo, key=int)))
         for i in grafo:
-            print(f"{Fore.YELLOW}{i}", end=' -> ')
-            print(f"{Fore.RESET}| ", end='')
+            print(f"{Fore.YELLOW}{i:>{width}}", end=' -> ')
             for j in grafo[i]:
-                print(f"{Fore.RESET}{j['vertice_id']}_P{j['peso']}", end=' | ')
+                print(f"{Fore.RESET}{j['vertice_id']:>5}_P{j['peso']:<5}", end=' | ')
             print()
 
     def matriz_adjacencia(self):
