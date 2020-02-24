@@ -10,11 +10,11 @@ color()
 class Grafo:
 
     def __init__(self, digrafo, valorado, q_vertices, arestas):
-        self.__id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
-        self.__digrafo = digrafo
-        self.__valorado = valorado
-        self.__q_vertices = q_vertices
-        self.__arestas = arestas
+        self._id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        self._digrafo = digrafo
+        self._valorado = valorado
+        self._q_vertices = q_vertices
+        self._arestas = arestas
 
     @staticmethod
     def definir_grafo():
@@ -68,7 +68,7 @@ class Grafo:
                         "genérico:" + Fore.RESET)
         id_grafo_p = input()
         if id_grafo_p:
-            self.__id_grafo = id_grafo_p
+            self._id_grafo = id_grafo_p
 
         with open("grafos.json", "a") as grafos_json:
             grafos_json.write(encode(self) + "\n")
@@ -78,11 +78,11 @@ class Grafo:
         with open("grafos.json", "r") as grafos_json:
             for line in grafos_json:
                 grafo = decode(line)
-                cabecalho(Fore.BLUE + f"{grafo.__id_grafo}" + Fore.RESET)
-                print(f"Digrafo: {grafo.__digrafo}")
-                print(f"Digrafo: {grafo.__valorado}")
-                print(f"Quantidade de vertices: {grafo.__q_vertices}")
-                print(f"Arestas: {grafo.__arestas}")
+                cabecalho(Fore.BLUE + f"{grafo._id_grafo}" + Fore.RESET)
+                print(f"Digrafo: {grafo._digrafo}")
+                print(f"Valorado: {grafo._valorado}")
+                print(f"Quantidade de vertices: {grafo._q_vertices}")
+                print(f"Arestas: {grafo._arestas}")
                 print()
 
     @staticmethod
@@ -98,7 +98,7 @@ class Grafo:
 
             for line in grafos_json:
                 grafo = decode(line)
-                if grafo.__id_grafo == id_r:
+                if grafo._id_grafo == id_r:
                     return grafo
             print()
             print(Fore.RED + "Grafo não encontrado, tente novamente."
@@ -106,22 +106,22 @@ class Grafo:
 
     def estrutura_adjacencia(self):
         grafo = {}
-        for i in range(self.__q_vertices):
+        for i in range(self._q_vertices):
             grafo.update({i + 1: []})
-        arestas = self.__arestas.split(",")
-        if self.__valorado:
+        arestas = self._arestas.split(",")
+        if self._valorado:
             for trio in arestas:
                 i, j, p = trio.split("-")
                 i, j, p = int(i.strip()), int(j.strip()), int(p.strip())
                 grafo[i].append({'vertice_id': j, 'peso': p})
-                if not self.__digrafo:
+                if not self._digrafo:
                     grafo[j].append({'vertice_id': i, 'peso': p})
         else:
             for par in arestas:
                 i, j = par.split("-")
                 i, j = int(i.strip()), int(j.strip())
                 grafo[i].append({'vertice_id': j, 'peso': 1})
-                if not self.__digrafo:
+                if not self._digrafo:
                     grafo[j].append({'vertice_id': i, 'peso': 1})
         return grafo
 
@@ -146,23 +146,23 @@ class Grafo:
 
     def matriz_adjacencia(self):
         grafo = []
-        for i in range(self.__q_vertices):
-            grafo.append([0] * self.__q_vertices)
-        arestas = self.__arestas.split(",")
-        if self.__valorado:
+        for i in range(self._q_vertices):
+            grafo.append([0] * self._q_vertices)
+        arestas = self._arestas.split(",")
+        if self._valorado:
             for trio in arestas:
                 i, j, p = trio.split("-")
                 i, j, p = (int(i.strip()) - 1), (int(j.strip()) - 1), \
                           (int(p.strip()))
                 grafo[i][j] = p
-                if not self.__digrafo:
+                if not self._digrafo:
                     grafo[j][i] = p
         else:
             for trio in arestas:
                 i, j = trio.split("-")
                 i, j = (int(i.strip()) - 1), (int(j.strip()) - 1)
                 grafo[i][j] = 1
-                if not self.__digrafo:
+                if not self._digrafo:
                     grafo[j][i] = 1
         return grafo
 
@@ -171,9 +171,9 @@ class Grafo:
 
         x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
                         [f"{Fore.YELLOW}{i + 1}{Fore.RESET}"
-                         for i in range(self.__q_vertices)])
+                         for i in range(self._q_vertices)])
         x.padding_width = 1
-        for i in range(self.__q_vertices):
+        for i in range(self._q_vertices):
             x.add_row([f"{Fore.YELLOW}{i + 1}{Fore.RESET}"] + grafo[i])
         print(x)
 
@@ -186,15 +186,15 @@ class Grafo:
 
     def regular(self):
         regular = True
-        for i in range(self.__q_vertices):
+        for i in range(self._q_vertices):
             if len(self.get_adjacentes(1)) != len(self.get_adjacentes(i)):
                 regular = False
         return regular
 
     def completo(self):
         completo = True
-        for i in range(self.__q_vertices):
-            if len(self.get_adjacentes(i)) != self.__q_vertices - 1:
+        for i in range(self._q_vertices):
+            if len(self.get_adjacentes(i)) != self._q_vertices - 1:
                 completo = False
         return completo
 
@@ -211,9 +211,9 @@ class Grafo:
         vertices_explorados = []
         q_componentes = 0
 
-        while len(vertices_visitados) < self.__q_vertices:
+        while len(vertices_visitados) < self._q_vertices:
             if q_componentes > 0:
-                for i in range(1, self.__q_vertices + 1):
+                for i in range(1, self._q_vertices + 1):
                     if i not in vertices_visitados:
                         vertice = i
             pilha.append(vertice)
@@ -238,9 +238,9 @@ class Grafo:
         vertices_explorados = []
         q_componentes = 0
 
-        while len(vertices_visitados) < self.__q_vertices:
+        while len(vertices_visitados) < self._q_vertices:
             if q_componentes > 0:
-                for i in range(1, self.__q_vertices + 1):
+                for i in range(1, self._q_vertices + 1):
                     if i not in vertices_visitados:
                         vertice = i
             fila.append(vertice)

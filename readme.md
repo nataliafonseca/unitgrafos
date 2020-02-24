@@ -25,7 +25,7 @@ Para informar as arestas, deve-se separar os vertices adjacentes por traços e c
 
 Por exemplo, para representação do grafo presente na seguinte imagem:
 
-![Exemplo de Grafo](grafo_exemplo.png)
+![Exemplo de Grafo](exemplos/simples.png)
 
 Deve-se entrar:
 
