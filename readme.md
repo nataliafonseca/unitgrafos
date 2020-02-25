@@ -33,7 +33,10 @@ O grafo é direcionado? Digite 1 para sim ou 0 para não:
 ```python
 0
 ```
-
+O grafo é valorado? Digite 1 para sim ou 0 para não: 
+```python
+0
+```
 Informe a quantidade de vertices do grafo:
 ```python
 12
