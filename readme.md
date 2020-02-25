@@ -10,7 +10,8 @@ pip install -r requirements.txt
 ```
 
 ## Inicialização do Programa
-Para dar inicio ao programa, execute o arquivo "sistema.py"
+Para dar inicio ao programa, execute o arquivo "sistema.py".
+
 Ao abrir o script, você será apresentado com o menu inicial do programa.
 
 ## Representação do Grafo
