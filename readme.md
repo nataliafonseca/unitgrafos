@@ -10,11 +10,13 @@ pip install -r requirements.txt
 ```
 
 ## Inicialização do Programa
+
 Para dar inicio ao programa, execute o arquivo "sistema.py".
 
 Ao abrir o script, você será apresentado com o menu inicial do programa.
 
 ## Representação do Grafo
+
 Quando escolher a opção "1 - Definir Grafo" o programa questionará se o mesmo é direcionado (ou digrafo) e, em seguida, se é valorado.
 Para estas perguntas, é preciso apenas responder com 1 (para sim) ou 0 (para não).
 
@@ -52,6 +54,7 @@ Ao final, o programa perguntará se você deseja salvar o grafo para utilizar po
 Alternativamente, os valores podem ser incluidos diretamente no arquivo "grafos.json", seguindo o padrão dos exemplos no arquivo, e resgatados utilizando a opção "2 - Resgatar Grafo"
 
 ## Autores:
+
 * Felipe Carvalho de Gois
 * Natália Braga da Fonseca
 * Sande Andrade de Souza Costa
