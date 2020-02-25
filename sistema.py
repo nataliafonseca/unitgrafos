@@ -15,6 +15,7 @@ grafo_exemplo = Grafo(digrafo, valorado, q_vertices, arestas)
 while True:
     resposta = menu(["Definir Grafo",
                      "Resgatar Grafo Salvo",
+                     "Imprimir Informações do Grafo",
                      "Imprimir Matriz de Adjacencia",
                      "Imprimir Estrutura de Adjacencia",
                      "Sair do sistema"])
@@ -39,38 +40,47 @@ while True:
 
     elif resposta == 3:
         print()
-        cabecalho("Opção 3 - Imprimir Matriz de Adjacencia")
-        if not grafo:
-            print(Fore.RED + "ATENÇÃO! Você ainda não definiu um grafo, "
-                             "será impressa a matriz correspondente ao grafo "
-                             "representado em 'grafo_exemplo.png'. Para "
-                             "adicionar seu proprio grafo, selecione a opção 1"
-                  + Fore.RESET)
-            grafo = grafo_exemplo
-
-        grafo.print_matriz_adjacencia()
+        cabecalho("Opção 2 - Imprimir Informações do Grafo")
+        grafo.imprimir_informacoes()
         print()
 
     elif resposta == 4:
+        print()
+        cabecalho("Opção 3 - Imprimir Matriz de Adjacencia")
+        if not grafo:
+            print(Fore.RED + "ATENÇÃO! Você ainda não definiu um grafo, "
+                             "será impressa a matriz correspondente ao "
+                             "grafo representado em 'exemplo/simples.png'. "
+                             "Para adicionar seu proprio grafo, selecione a "
+                             "opção 1."
+                  + Fore.RESET)
+            grafo = grafo_exemplo
+
+        grafo.imprimir_matriz_adjacencia()
+        print()
+
+    elif resposta == 5:
         print()
         cabecalho("Opção 4 - Imprimir Estrutura de Adjacencia")
         if not grafo:
             print(Fore.RED + "ATENÇÃO! Você ainda não definiu um grafo, "
                              "será impressa a estrutura correspondente ao "
-                             "grafo representado em 'grafo_exemplo.png'. Para "
-                             "adicionar seu proprio grafo, selecione a opção 1"
+                             "grafo representado em 'exemplo/simples.png'. "
+                             "Para adicionar seu proprio grafo, selecione a "
+                             "opção 1."
                   + Fore.RESET)
             grafo = grafo_exemplo
-        grafo.print_estrutura_adjacencia()
+        grafo.imprimir_estrutura_adjacencia()
         print()
 
-    elif resposta == 5:
+    elif resposta == 6:
         print()
         cabecalho("Saindo do sistema... Até logo!")
+        sleep(1)
         break
 
     else:
         print(Fore.RED + "ERRO: Por favor, digite um número inteiro entre "
-                         "1 e 5" + Fore.RESET)
+                         "1 e 6" + Fore.RESET)
 
     sleep(1)
