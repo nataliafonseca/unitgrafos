@@ -334,10 +334,6 @@ class Grafo:
     def imprimir_menor_caminho(self, v_origem, v_destino="todos"):
         vertices, dist, path = self._dijkstra(v_origem)
 
-        # for idx, v in enumerate(path):
-        #     if v != '-':
-        #         path[idx] = f'v{v}'
-
         if v_destino == "todos":
             x = PrettyTable([f"{Fore.YELLOW}vertice{Fore.RESET}",
                              f"{Fore.YELLOW}dist{Fore.RESET}",
