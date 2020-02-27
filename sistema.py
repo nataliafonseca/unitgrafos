@@ -35,39 +35,49 @@ while True:
     elif resposta == 3:
         print()
         cabecalho("Opção 3 - Imprimir Informações do Grafo")
-        grafo = teste_grafo_definido(grafo)
+        grafo, definido = teste_grafo_definido(grafo)
         grafo.imprimir_informacoes()
+        if not definido:
+            grafo = None
         print()
 
     elif resposta == 4:
         print()
         cabecalho("Opção 4 - Imprimir Matriz de Adjacencia")
-        grafo = teste_grafo_definido(grafo)
+        grafo, definido = teste_grafo_definido(grafo)
         grafo.imprimir_matriz_adjacencia()
+        if not definido:
+            grafo = None
         print()
 
     elif resposta == 5:
         print()
         cabecalho("Opção 5 - Imprimir Estrutura de Adjacencia")
-        grafo = teste_grafo_definido(grafo)
+        grafo, definido = teste_grafo_definido(grafo)
         grafo.imprimir_estrutura_adjacencia()
+        if not definido:
+            grafo = None
         print()
 
     elif resposta == 6:
         print()
         cabecalho("Opção 6 - Obter Menor Caminho entre Dois Vértices")
-        grafo = teste_grafo_definido(grafo)
+        grafo, definido = teste_grafo_definido(grafo)
         origem = int(input("Informe o vértice inicial: "))
         destino = int(input("Informe o vértice final: "))
         grafo.imprimir_menor_caminho(origem, destino)
+        if not definido:
+            grafo = None
         print()
 
     elif resposta == 7:
         print()
         cabecalho("Opção 7 - Obter Menores Caminhos a partir de um Vértice")
-        grafo = teste_grafo_definido(grafo)
+        grafo, definido = teste_grafo_definido(grafo)
         origem = int(input("Informe o vértice inicial: "))
         grafo.imprimir_menor_caminho(origem)
+        if not definido:
+            grafo = None
         print()
 
     elif resposta == 8:

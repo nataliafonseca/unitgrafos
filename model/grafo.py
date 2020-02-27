@@ -85,8 +85,9 @@ class Grafo:
         print(f"{Fore.YELLOW}Completo:{Fore.RESET} {self.completo()}")
         print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.conexo()}")
         if not self.conexo():
-            print(f"{Fore.YELLOW}Quantidade de componentes conexos:{Fore.RESET} "
-                  f"{self._get_q_componentes()['conexos']}")
+            print(
+                f"{Fore.YELLOW}Quantidade de componentes conexos:{Fore.RESET} "
+                f"{self._get_q_componentes()['conexos']}")
         if self._digrafo:
             if not self.fortemente_conexo():
                 print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
@@ -182,7 +183,6 @@ class Grafo:
         x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
                         [f"{Fore.YELLOW}v{i + 1}{Fore.RESET}"
                          for i in range(self._q_vertices)])
-        x.padding_width = 1
         for i in range(self._q_vertices):
             x.add_row([f"{Fore.YELLOW}v{i + 1}{Fore.RESET}"] + grafo[i])
         print(x)
@@ -297,11 +297,11 @@ class Grafo:
         return {'conexos': q_conexos, 'fortes': q_fortemente_conexos}
 
     def _dijkstra(self, v_origem):
-        vertices = [(i+1) for i in range(self._q_vertices)]
+        vertices = [(i + 1) for i in range(self._q_vertices)]
         dist = [float('inf') for i in range(self._q_vertices)]
         path = ['-' for i in range(self._q_vertices)]
         s = [v_origem]
-        not_s = [(i+1) for i in range(self._q_vertices)]
+        not_s = [(i + 1) for i in range(self._q_vertices)]
         not_s.remove(v_origem)
         dist[v_origem - 1] = 0
 
@@ -331,14 +331,32 @@ class Grafo:
 
         return vertices, dist, path
 
+    def _get_caminho(self, v_origem, v_destino):
+        vertices, dist, path = self._dijkstra(v_origem)
+        caminho = [v_destino]
+        v = v_destino
+        while v != v_origem:
+            v = path[int(v) - 1]
+            caminho.append(v)
+        caminho = caminho[::-1]
+        return caminho
+
+    def _get_caminho_formatado(self, v_origem, v_destino):
+        caminho = self._get_caminho(v_origem, v_destino)
+        c_form = f"{Fore.YELLOW}v{caminho[0]}{Fore.RESET} > "
+        for vertice in caminho[1:-1:]:
+            c_form += f"v{vertice} > "
+        c_form += f"{Fore.YELLOW}v{caminho[-1]}{Fore.RESET}"
+        return c_form
+
     def imprimir_menor_caminho(self, v_origem, v_destino="todos"):
         vertices, dist, path = self._dijkstra(v_origem)
 
         if v_destino == "todos":
-            x = PrettyTable([f"{Fore.YELLOW}vertice{Fore.RESET}",
-                             f"{Fore.YELLOW}dist{Fore.RESET}",
-                             f"{Fore.YELLOW}path{Fore.RESET}"])
-            x.padding_width = 1
+            x = PrettyTable([f"{Fore.BLUE}vertice{Fore.RESET}",
+                             f"{Fore.BLUE}distância{Fore.RESET}",
+                             f"{Fore.BLUE}caminho{Fore.RESET}"])
+            x.align[f"{Fore.BLUE}caminho{Fore.RESET}"] = "l"
 
             x.add_row([f"{Fore.YELLOW}v{v_origem}{Fore.RESET}",
                        f"{Fore.YELLOW}0{Fore.RESET}",
@@ -346,18 +364,10 @@ class Grafo:
             for idx, vertice in enumerate(vertices):
                 if vertice != v_origem:
                     x.add_row([f"{Fore.YELLOW}v{vertices[idx]}{Fore.RESET}",
-                               dist[idx], f"v{path[idx]}"])
+                               dist[idx],
+                               f"{self._get_caminho_formatado(v_origem, vertice)}"])
 
             print(x)
         else:
-            caminho = []
-            v = v_destino
-            while v != v_origem:
-                v = path[int(v) - 1]
-                if v == v_origem:
-                    break
-                caminho.append(v)
-            print(f"{Fore.YELLOW}v{v_origem}{Fore.RESET}", end=' > ')
-            for vertice in caminho[::-1]:
-                print(f"v{vertice}", end=' > ')
-            print(f"{Fore.YELLOW}v{v_destino}{Fore.RESET}")
+            print(self._get_caminho_formatado(v_origem, v_destino))
+            print(f"Distância = {dist[int(v_destino) - 1]}")
