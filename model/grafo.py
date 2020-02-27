@@ -194,6 +194,15 @@ class Grafo:
             adjacentes.append(i['vertice_id'])
         return adjacentes
 
+    def _get_adjacentes_e_pesos(self, vertice):
+        grafo = self.estrutura_adjacencia()
+        adjacentes = []
+        pesos = []
+        for i in grafo[vertice]:
+            adjacentes.append(i['vertice_id'])
+            pesos.append(i['peso'])
+        return adjacentes, pesos
+
     def regular(self):
         regular = True
         for i in range(self._q_vertices):
@@ -286,3 +295,63 @@ class Grafo:
             q_conexos = self._busca_geral('largura')[1]
             self._digrafo = True
         return {'conexos': q_conexos, 'fortes': q_fortemente_conexos}
+
+    def _dijkstra(self, v_origem):
+        vertices = [(i+1) for i in range(self._q_vertices)]
+        dist = [float('inf') for i in range(self._q_vertices)]
+        path = ['-' for i in range(self._q_vertices)]
+        s = [v_origem]
+        not_s = [(i+1) for i in range(self._q_vertices)]
+        not_s.remove(v_origem)
+        dist[v_origem - 1] = 0
+
+        v_atual = v_origem
+
+        while not_s:
+            _adj, _p = self._get_adjacentes_e_pesos(v_atual)
+            adjacentes, pesos = [], []
+            for idx, vertice in enumerate(_adj):
+                if vertice in not_s:
+                    adjacentes.append(_adj[idx])
+                    pesos.append(_p[idx])
+
+            for idx, vertice in enumerate(adjacentes):
+                if dist[vertice - 1] > dist[v_atual - 1] + pesos[idx]:
+                    dist[vertice - 1] = dist[v_atual - 1] + pesos[idx]
+                    path[vertice - 1] = v_atual
+
+            min_dist = float('inf')
+            if adjacentes:
+                for vertice in adjacentes:
+                    if dist[vertice - 1] < min_dist:
+                        min_dist = dist[vertice - 1]
+                        v_atual = vertice
+            else:
+                for vertice in not_s:
+                    if dist[vertice - 1] < min_dist:
+                        min_dist = dist[vertice - 1]
+                        v_atual = vertice
+
+            s.append(v_atual)
+            not_s.remove(v_atual)
+
+        return vertices, dist, path
+
+    def get_menor_caminho(self, v_origem, v_destino="todos"):
+        vertices, dist, path = self._dijkstra(v_origem)
+        if v_destino == "todos":
+            x = PrettyTable(['vertice', 'dist', 'path'])
+            x.padding_width = 1
+
+            for i in range(len(vertices)):
+                x.add_row([vertices[i], dist[i], path[i]])
+            return x
+        else:
+            caminho = [v_destino]
+            v = v_destino
+            while v != v_origem:
+                v = path[int(v) - 1]
+                caminho.append(v)
+            return caminho
+
+
