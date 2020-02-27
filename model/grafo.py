@@ -321,16 +321,10 @@ class Grafo:
                     path[vertice - 1] = v_atual
 
             min_dist = float('inf')
-            if adjacentes:
-                for vertice in adjacentes:
-                    if dist[vertice - 1] < min_dist:
-                        min_dist = dist[vertice - 1]
-                        v_atual = vertice
-            else:
-                for vertice in not_s:
-                    if dist[vertice - 1] < min_dist:
-                        min_dist = dist[vertice - 1]
-                        v_atual = vertice
+            for vertice in not_s:
+                if dist[vertice - 1] < min_dist:
+                    min_dist = dist[vertice - 1]
+                    v_atual = vertice
 
             s.append(v_atual)
             not_s.remove(v_atual)
