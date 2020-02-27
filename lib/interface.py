@@ -1,4 +1,5 @@
-from model.grafo import *
+from colorama import Fore, init as color
+
 
 color()
 
@@ -37,14 +38,15 @@ def menu(lista):
     return opc
 
 
-def teste_grafo_definido(grafo):
+def teste_grafo_definido(grafo_):
+    from model.grafo import Grafo
     digrafo = False
     valorado = False
     q_vertices = 12
-    arestas = "1-2, 1-3, 2-3, 2-5, 2-6, 3-4, 3-6, 4-7, 5-6, 5-9, 5-10, 6-7," \
-              "6-10, 6-11, 7-8, 7-12, 8-12, 9-10, 10-11"
+    arestas = "1-2, 1-3, 2-3, 2-5, 2-6, 3-4, 3-6, 4-7, 5-6, 5-9, 5-10, " \
+              "6-7, 6-10, 6-11, 7-8, 7-12, 8-12, 9-10, 10-11"
     grafo_exemplo = Grafo(digrafo, valorado, q_vertices, arestas)
-    if not grafo:
+    if not grafo_:
         print(Fore.RED + "ATENÇÃO! Você ainda não definiu um grafo, "
                          "serão impressas as informações correspondentes "
                          "ao grafo representado em 'exemplo/simples.png'. "
@@ -52,4 +54,4 @@ def teste_grafo_definido(grafo):
                          "opção 1."
               + Fore.RESET)
         return grafo_exemplo
-    return grafo
+    return grafo_

@@ -1,4 +1,5 @@
 from lib.interface import *
+from model.grafo import Grafo
 from time import sleep
 
 grafo = None
@@ -58,7 +59,7 @@ while True:
         grafo = teste_grafo_definido(grafo)
         origem = int(input("Informe o vértice inicial: "))
         destino = int(input("Informe o vértice final: "))
-        print(grafo.get_menor_caminho(origem, destino))
+        grafo.imprimir_menor_caminho(origem, destino)
         print()
 
     elif resposta == 7:
@@ -66,7 +67,7 @@ while True:
         cabecalho("Opção 7 - Obter Menores Caminhos a partir de um Vértice")
         grafo = teste_grafo_definido(grafo)
         origem = int(input("Informe o vértice inicial: "))
-        print(grafo.get_menor_caminho(origem))
+        grafo.imprimir_menor_caminho(origem)
         print()
 
     elif resposta == 8:

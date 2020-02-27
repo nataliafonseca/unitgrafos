@@ -148,9 +148,9 @@ class Grafo:
         wg = len(str(max(grafo, key=int)))
         wp = len(str(self._max_peso))
         for i in grafo:
-            print(f"{Fore.YELLOW}{i:>{wg}}", end=' -> ')
+            print(f"{Fore.YELLOW}v{i:<{wg}}", end=' -> ')
             for j in grafo[i]:
-                print(f"{Fore.RESET}{j['vertice_id']:>{wg}}"
+                print(f"{Fore.RESET}v{j['vertice_id']:<{wg}}"
                       f"_P{j['peso']:<{wp}}", end=' | ')
             print()
 
@@ -180,11 +180,11 @@ class Grafo:
         grafo = self.matriz_adjacencia()
 
         x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
-                        [f"{Fore.YELLOW}{i + 1}{Fore.RESET}"
+                        [f"{Fore.YELLOW}v{i + 1}{Fore.RESET}"
                          for i in range(self._q_vertices)])
         x.padding_width = 1
         for i in range(self._q_vertices):
-            x.add_row([f"{Fore.YELLOW}{i + 1}{Fore.RESET}"] + grafo[i])
+            x.add_row([f"{Fore.YELLOW}v{i + 1}{Fore.RESET}"] + grafo[i])
         print(x)
 
     def get_adjacentes(self, vertice):
@@ -331,21 +331,37 @@ class Grafo:
 
         return vertices, dist, path
 
-    def get_menor_caminho(self, v_origem, v_destino="todos"):
+    def imprimir_menor_caminho(self, v_origem, v_destino="todos"):
         vertices, dist, path = self._dijkstra(v_origem)
+
+        # for idx, v in enumerate(path):
+        #     if v != '-':
+        #         path[idx] = f'v{v}'
+
         if v_destino == "todos":
-            x = PrettyTable(['vertice', 'dist', 'path'])
+            x = PrettyTable([f"{Fore.YELLOW}vertice{Fore.RESET}",
+                             f"{Fore.YELLOW}dist{Fore.RESET}",
+                             f"{Fore.YELLOW}path{Fore.RESET}"])
             x.padding_width = 1
 
-            for i in range(len(vertices)):
-                x.add_row([vertices[i], dist[i], path[i]])
-            return x
+            x.add_row([f"{Fore.YELLOW}v{v_origem}{Fore.RESET}",
+                       f"{Fore.YELLOW}0{Fore.RESET}",
+                       f"{Fore.YELLOW}-{Fore.RESET}"])
+            for idx, vertice in enumerate(vertices):
+                if vertice != v_origem:
+                    x.add_row([f"{Fore.YELLOW}v{vertices[idx]}{Fore.RESET}",
+                               dist[idx], f"v{path[idx]}"])
+
+            print(x)
         else:
-            caminho = [v_destino]
+            caminho = []
             v = v_destino
             while v != v_origem:
                 v = path[int(v) - 1]
+                if v == v_origem:
+                    break
                 caminho.append(v)
-            return caminho
-
-
+            print(f"{Fore.YELLOW}v{v_origem}{Fore.RESET}", end=' > ')
+            for vertice in caminho[::-1]:
+                print(f"v{vertice}", end=' > ')
+            print(f"{Fore.YELLOW}v{v_destino}{Fore.RESET}")
