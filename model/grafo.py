@@ -3,17 +3,18 @@ from prettytable import PrettyTable
 from datetime import datetime
 from jsonpickle import encode, decode
 from colorama import Fore, init as color
+from copy import deepcopy
 
 color()
 
 
 class Grafo:
 
-    def __init__(self, digrafo, valorado, q_vertices, arestas):
+    def __init__(self, digrafo, valorado, vertices, arestas):
         self._id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
         self._digrafo = digrafo
         self._valorado = valorado
-        self._q_vertices = q_vertices
+        self._vertices = vertices
         self._arestas = arestas
         self._max_peso = 1
 
@@ -29,9 +30,9 @@ class Grafo:
         valorado = bool(int(input()))
         print()
 
-        print(Fore.BLUE + "Informe a quantidade de vertices do grafo:"
-              + Fore.RESET)
-        q_vertices = int(input())
+        print(Fore.BLUE + "Informe os vértices do grafo, separando por "
+                          "vírgula: " + Fore.RESET)
+        vertices = list(input().replace(" ", "").upper().split(','))
         print()
 
         if valorado:
@@ -41,9 +42,10 @@ class Grafo:
                             "par de vertices deve ser separado por virgula, "
                             "obtendo o formato: "
                 + Fore.YELLOW + "vinicial-vfinal-peso, vinicial-vfinal-peso, "
+                + Fore.YELLOW + "vinicial-vfinal-peso, vinicial-vfinal-peso, "
                                 "..., vinicial-vfinal-peso"
                 + Fore.BLUE + ". Por exemplo: "
-                + Fore.YELLOW + "1-2-4, 1-3-10, 1-4-20, 2-3-5"
+                + Fore.YELLOW + "A-B-4, A-C-10, A-D-20, B-C-5"
                 + Fore.BLUE + "):"
                 + Fore.RESET)
         else:
@@ -55,12 +57,12 @@ class Grafo:
                 + Fore.YELLOW + "vinicial-vfinal, vinicial-vfinal, ..., "
                                 "vinicial-vfinal"
                 + Fore.BLUE + ". Por exemplo: "
-                + Fore.YELLOW + " 1-2, 1-3, 1-4, 2-3" + Fore.BLUE + "):"
+                + Fore.YELLOW + "A-B, A-C, A-D, B-C" + Fore.BLUE + "):"
                 + Fore.RESET)
-        arestas = input()
+        arestas = list(input().replace(" ", "").upper().split(','))
         print()
 
-        return Grafo(digrafo, valorado, q_vertices, arestas)
+        return Grafo(digrafo, valorado, vertices, arestas)
 
     def cadastrar_grafo(self):
         print(
@@ -76,8 +78,7 @@ class Grafo:
 
     def imprimir_informacoes(self):
         cabecalho(Fore.BLUE + f"{self._id_grafo}" + Fore.RESET)
-        print(f"{Fore.YELLOW}Quantidade de vertices:{Fore.RESET} "
-              f"{self._q_vertices}")
+        print(f"{Fore.YELLOW}vertices:{Fore.RESET} {self._vertices}")
         print(f"{Fore.YELLOW}Arestas:{Fore.RESET} {self._arestas}")
         print(f"{Fore.YELLOW}Digrafo:{Fore.RESET} {self._digrafo}")
         print(f"{Fore.YELLOW}Valorado:{Fore.RESET} {self._valorado}")
@@ -85,9 +86,8 @@ class Grafo:
         print(f"{Fore.YELLOW}Completo:{Fore.RESET} {self.completo()}")
         print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.conexo()}")
         if not self.conexo():
-            print(
-                f"{Fore.YELLOW}Quantidade de componentes conexos:{Fore.RESET} "
-                f"{self._get_q_componentes()['conexos']}")
+            print(f"{Fore.YELLOW}Quantidade de componentes conexos: "
+                  f"{Fore.RESET}{self._get_q_componentes()['conexos']}")
         if self._digrafo:
             if not self.fortemente_conexo():
                 print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
@@ -123,13 +123,12 @@ class Grafo:
 
     def estrutura_adjacencia(self):
         grafo = {}
-        for i in range(self._q_vertices):
-            grafo.update({i + 1: []})
-        arestas = self._arestas.split(",")
+        for i in range(len(self._vertices)):
+            grafo.update({self._vertices[i]: []})
+        arestas = self._arestas
         if self._valorado:
             for trio in arestas:
-                i, j, p = trio.split("-")
-                i, j, p = int(i.strip()), int(j.strip()), int(p.strip())
+                i, j, p = trio.replace(" ", "").split("-")
                 grafo[i].append({'vertice_id': j, 'peso': p})
                 if not self._digrafo:
                     grafo[j].append({'vertice_id': i, 'peso': p})
@@ -137,8 +136,7 @@ class Grafo:
                     self._max_peso = p
         else:
             for par in arestas:
-                i, j = par.split("-")
-                i, j = int(i.strip()), int(j.strip())
+                i, j = par.replace(" ", "").split("-")
                 grafo[i].append({'vertice_id': j, 'peso': 1})
                 if not self._digrafo:
                     grafo[j].append({'vertice_id': i, 'peso': 1})
@@ -146,32 +144,31 @@ class Grafo:
 
     def imprimir_estrutura_adjacencia(self):
         grafo = self.estrutura_adjacencia()
-        wg = len(str(max(grafo, key=int)))
+        wg = len((max(grafo, key=len)))
         wp = len(str(self._max_peso))
         for i in grafo:
-            print(f"{Fore.YELLOW}v{i:<{wg}}", end=' -> ')
+            print(f"{Fore.YELLOW}{i:<{wg}}", end=' -> ')
             for j in grafo[i]:
-                print(f"{Fore.RESET}v{j['vertice_id']:<{wg}}"
+                print(f"{Fore.RESET}{j['vertice_id']:<{wg}}"
                       f"_P{j['peso']:<{wp}}", end=' | ')
             print()
 
     def matriz_adjacencia(self):
         grafo = []
-        for i in range(self._q_vertices):
-            grafo.append([0] * self._q_vertices)
-        arestas = self._arestas.split(",")
+        for i in range(len(self._vertices)):
+            grafo.append([0] * len(self._vertices))
+        arestas = self._arestas
         if self._valorado:
             for trio in arestas:
-                i, j, p = trio.split("-")
-                i, j, p = (int(i.strip()) - 1), (int(j.strip()) - 1), \
-                          (int(p.strip()))
+                i, j, p = trio.replace(" ", "").split("-")
+                i, j = self._vertices.index(i), self._vertices.index(j)
                 grafo[i][j] = p
                 if not self._digrafo:
                     grafo[j][i] = p
         else:
-            for trio in arestas:
-                i, j = trio.split("-")
-                i, j = (int(i.strip()) - 1), (int(j.strip()) - 1)
+            for par in arestas:
+                i, j = par.replace(" ", "").split("-")
+                i, j = self._vertices.index(i), self._vertices.index(j)
                 grafo[i][j] = 1
                 if not self._digrafo:
                     grafo[j][i] = 1
@@ -181,10 +178,10 @@ class Grafo:
         grafo = self.matriz_adjacencia()
 
         x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
-                        [f"{Fore.YELLOW}v{i + 1}{Fore.RESET}"
-                         for i in range(self._q_vertices)])
-        for i in range(self._q_vertices):
-            x.add_row([f"{Fore.YELLOW}v{i + 1}{Fore.RESET}"] + grafo[i])
+                        [f"{Fore.YELLOW}{vertice}{Fore.RESET}"
+                         for vertice in self._vertices])
+        for idx, vertice in enumerate(self._vertices):
+            x.add_row([f"{Fore.YELLOW}{vertice}{Fore.RESET}"] + grafo[idx])
         print(x)
 
     def get_adjacentes(self, vertice):
@@ -205,15 +202,16 @@ class Grafo:
 
     def regular(self):
         regular = True
-        for i in range(self._q_vertices):
-            if len(self.get_adjacentes(1)) != len(self.get_adjacentes(i + 1)):
+        for idx, vertice in enumerate(self._vertices):
+            if len(self.get_adjacentes(self._vertices[0])) != \
+                    len(self.get_adjacentes(self._vertices[idx])):
                 regular = False
         return regular
 
     def completo(self):
         completo = True
-        for i in range(self._q_vertices):
-            if len(self.get_adjacentes(i + 1)) != self._q_vertices - 1:
+        for vertice in self._vertices:
+            if len(self.get_adjacentes(vertice)) != len(self._vertices) - 1:
                 completo = False
         return completo
 
@@ -229,7 +227,7 @@ class Grafo:
             fortemente_conexo = False
         return fortemente_conexo
 
-    def _busca_profundidade_por_componente(self, vertice_inicial=1):
+    def _busca_profundidade_por_componente(self, vertice_inicial):
         pilha = [vertice_inicial]
         vertices_visitados = [vertice_inicial]
         vertices_explorados = []
@@ -245,7 +243,7 @@ class Grafo:
 
         return vertices_visitados
 
-    def _busca_largura_por_componente(self, vertice_inicial=1):
+    def _busca_largura_por_componente(self, vertice_inicial):
         fila = [vertice_inicial]
         vertices_visitados = [vertice_inicial]
         vertices_explorados = []
@@ -262,15 +260,15 @@ class Grafo:
         return vertices_visitados
 
     def _busca_geral(self, busca):
-        vertice = 1
+        vertice = self._vertices[0]
         q_componentes = 0
         vertices_visitados = []
 
-        while len(vertices_visitados) < self._q_vertices:
+        while len(vertices_visitados) < len(self._vertices):
             if q_componentes > 0:
-                for i in range(1, self._q_vertices + 1):
-                    if i not in vertices_visitados:
-                        vertice = i
+                for v in self._vertices:
+                    if v not in vertices_visitados:
+                        vertice = v
             if busca == 'largura':
                 vertices_visitados += \
                     self._busca_largura_por_componente(vertice)
@@ -297,13 +295,12 @@ class Grafo:
         return {'conexos': q_conexos, 'fortes': q_fortemente_conexos}
 
     def _dijkstra(self, v_origem):
-        vertices = [(i + 1) for i in range(self._q_vertices)]
-        dist = [float('inf') for i in range(self._q_vertices)]
-        path = ['-' for i in range(self._q_vertices)]
+        dist = [float('inf') for i in range(len(self._vertices))]
+        path = ['-' for i in range(len(self._vertices))]
         s = [v_origem]
-        not_s = [(i + 1) for i in range(self._q_vertices)]
+        not_s = deepcopy(self._vertices)
         not_s.remove(v_origem)
-        dist[v_origem - 1] = 0
+        dist[self._vertices.index(v_origem)] = 0
 
         v_atual = v_origem
 
@@ -316,41 +313,43 @@ class Grafo:
                     pesos.append(_p[idx])
 
             for idx, vertice in enumerate(adjacentes):
-                if dist[vertice - 1] > dist[v_atual - 1] + pesos[idx]:
-                    dist[vertice - 1] = dist[v_atual - 1] + pesos[idx]
-                    path[vertice - 1] = v_atual
+                if dist[self._vertices.index(vertice)] > \
+                        dist[self._vertices.index(v_atual)] + pesos[idx]:
+                    dist[self._vertices.index(vertice)] = \
+                        dist[self._vertices.index(v_atual)] + pesos[idx]
+                    path[self._vertices.index(vertice)] = v_atual
 
             min_dist = float('inf')
             for vertice in not_s:
-                if dist[vertice - 1] < min_dist:
-                    min_dist = dist[vertice - 1]
+                if dist[self._vertices.index(vertice)] < min_dist:
+                    min_dist = dist[self._vertices.index(vertice)]
                     v_atual = vertice
 
             s.append(v_atual)
             not_s.remove(v_atual)
 
-        return vertices, dist, path
+        return dist, path
 
     def _get_caminho(self, v_origem, v_destino):
-        vertices, dist, path = self._dijkstra(v_origem)
+        path = self._dijkstra(v_origem)[1]
         caminho = [v_destino]
         v = v_destino
         while v != v_origem:
-            v = path[int(v) - 1]
+            v = path[self._vertices.index(v)]
             caminho.append(v)
         caminho = caminho[::-1]
         return caminho
 
-    def _get_caminho_formatado(self, v_origem, v_destino):
+    def _caminho_format(self, v_origem, v_destino):
         caminho = self._get_caminho(v_origem, v_destino)
-        c_form = f"{Fore.YELLOW}v{caminho[0]}{Fore.RESET} > "
+        c_form = f"{Fore.YELLOW}{caminho[0]}{Fore.RESET} > "
         for vertice in caminho[1:-1:]:
-            c_form += f"v{vertice} > "
-        c_form += f"{Fore.YELLOW}v{caminho[-1]}{Fore.RESET}"
+            c_form += f"{vertice} > "
+        c_form += f"{Fore.YELLOW}{caminho[-1]}{Fore.RESET}"
         return c_form
 
     def imprimir_menor_caminho(self, v_origem, v_destino="todos"):
-        vertices, dist, path = self._dijkstra(v_origem)
+        dist, path = self._dijkstra(v_origem)
 
         if v_destino == "todos":
             x = PrettyTable([f"{Fore.BLUE}vertice{Fore.RESET}",
@@ -358,16 +357,16 @@ class Grafo:
                              f"{Fore.BLUE}caminho{Fore.RESET}"])
             x.align[f"{Fore.BLUE}caminho{Fore.RESET}"] = "l"
 
-            x.add_row([f"{Fore.YELLOW}v{v_origem}{Fore.RESET}",
+            x.add_row([f"{Fore.YELLOW}{v_origem}{Fore.RESET}",
                        f"{Fore.YELLOW}0{Fore.RESET}",
                        f"{Fore.YELLOW}-{Fore.RESET}"])
-            for idx, vertice in enumerate(vertices):
+            for idx, vertice in enumerate(self._vertices):
                 if vertice != v_origem:
-                    x.add_row([f"{Fore.YELLOW}v{vertices[idx]}{Fore.RESET}",
-                               dist[idx],
-                               f"{self._get_caminho_formatado(v_origem, vertice)}"])
+                    x.add_row([f"{Fore.YELLOW}{self._vertices[idx]}"
+                               f"{Fore.RESET}", dist[idx],
+                               f"{self._caminho_format(v_origem, vertice)}"])
 
             print(x)
         else:
-            print(self._get_caminho_formatado(v_origem, v_destino))
+            print(self._caminho_format(v_origem, v_destino))
             print(f"Distância = {dist[int(v_destino) - 1]}")
