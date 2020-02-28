@@ -40,10 +40,11 @@ def menu(lista):
 
 def teste_grafo_definido(grafo):
     from model.grafo import Grafo
-    grafo_exemplo = Grafo(False, False, 12, "1-2, 1-3, 2-3, 2-5, 2-6, 3-4, "
-                                            "3-6, 4-7, 5-6, 5-9, 5-10, 6-7, "
-                                            "6-10, 6-11, 7-8, 7-12, 8-12, "
-                                            "9-10, 10-11")
+    grafo_exemplo = Grafo(False, False, ["A", "B", "C", "D", "E", "F", "G",
+                                         "H", "I", "J", "K", "L"],
+                          ["A-B", "A-C", "B-C", "B-E", "B-F", "C-D", "C-F",
+                           "D-G", "E-F", "E-J", "E-I", "F-G", "F-K", "G-H",
+                           "G-L", "H-L"])
     grafo_exemplo._id_grafo = 'simples'
     if not grafo:
         print(Fore.RED + "ATENÇÃO! Você ainda não definiu um grafo, "

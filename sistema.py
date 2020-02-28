@@ -10,6 +10,7 @@ while True:
                      "Imprimir Informações do Grafo",
                      "Imprimir Matriz de Adjacencia",
                      "Imprimir Estrutura de Adjacencia",
+                     "Obter Vértices Adjacentes",
                      "Obter Menor Caminho entre Dois Vértices",
                      "Obter Menores Caminhos a partir de um Vértice",
                      "Sair do sistema"])
@@ -61,26 +62,36 @@ while True:
 
     elif resposta == 6:
         print()
-        cabecalho("Opção 6 - Obter Menor Caminho entre Dois Vértices")
+        cabecalho("Opção 6 - Obter Vértices Adjacentes")
         grafo, definido = teste_grafo_definido(grafo)
-        origem = int(input("Informe o vértice inicial: "))
-        destino = int(input("Informe o vértice final: "))
-        grafo.imprimir_menor_caminho(origem, destino)
+        vertice = input("Informe o vértice: ")
+        print(grafo.get_adjacentes(vertice))
         if not definido:
             grafo = None
         print()
 
     elif resposta == 7:
         print()
-        cabecalho("Opção 7 - Obter Menores Caminhos a partir de um Vértice")
+        cabecalho("Opção 7 - Obter Menor Caminho entre Dois Vértices")
         grafo, definido = teste_grafo_definido(grafo)
-        origem = int(input("Informe o vértice inicial: "))
-        grafo.imprimir_menor_caminho(origem)
+        origem = input("Informe o vértice inicial: ")
+        destino = input("Informe o vértice final: ")
+        grafo.imprimir_menor_caminho(origem, destino)
         if not definido:
             grafo = None
         print()
 
     elif resposta == 8:
+        print()
+        cabecalho("Opção 8 - Obter Menores Caminhos a partir de um Vértice")
+        grafo, definido = teste_grafo_definido(grafo)
+        origem = input("Informe o vértice inicial: ")
+        grafo.imprimir_menor_caminho(origem)
+        if not definido:
+            grafo = None
+        print()
+
+    elif resposta == 9:
         print()
         cabecalho("Saindo do sistema... Até logo!")
         sleep(1)
