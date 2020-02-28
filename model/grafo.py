@@ -129,6 +129,7 @@ class Grafo:
         if self._valorado:
             for trio in arestas:
                 i, j, p = trio.replace(" ", "").split("-")
+                p = int(p)
                 grafo[i].append({'vertice_id': j, 'peso': p})
                 if not self._digrafo:
                     grafo[j].append({'vertice_id': i, 'peso': p})
@@ -162,6 +163,7 @@ class Grafo:
             for trio in arestas:
                 i, j, p = trio.replace(" ", "").split("-")
                 i, j = self._vertices.index(i), self._vertices.index(j)
+                p = int(p)
                 grafo[i][j] = p
                 if not self._digrafo:
                     grafo[j][i] = p
@@ -369,4 +371,4 @@ class Grafo:
             print(x)
         else:
             print(self._caminho_format(v_origem, v_destino))
-            print(f"Distância = {dist[int(v_destino) - 1]}")
+            print(f"Distância = {dist[self._vertices.index(v_destino)]}")
