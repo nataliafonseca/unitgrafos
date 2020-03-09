@@ -93,7 +93,6 @@ class Grafo:
                 print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
                       f"conexos:{Fore.RESET} "
                       f"{self._get_q_componentes()['fortes']}")
-        print()
 
     @staticmethod
     def listar_grafos_salvos():

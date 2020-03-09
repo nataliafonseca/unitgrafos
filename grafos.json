@@ -3,3 +3,5 @@
 {"_arestas": ["A-B-1", "A-D-4", "B-C-5", "B-D-7", "B-E-3", "B-F-6", "C-F-9", "D-E-8", "E-F-2"], "_digrafo": false, "_id_grafo": "valorado", "_max_peso": 1, "_valorado": true, "_vertices": ["A", "B", "C", "D", "E", "F"], "py/object": "model.grafo.Grafo"}
 {"_arestas": ["A-B", "A-D", "B-C", "E-F"], "_digrafo": false, "_id_grafo": "desconexo", "_max_peso": 1, "_valorado": false, "_vertices": ["A", "B", "C", "D", "E", "F"], "py/object": "model.grafo.Grafo"}
 {"_arestas": ["A-B-10", "A-C-5", "B-C-2", "B-D-1", "C-B-3", "C-D-9", "C-E-2", "D-E-4", "E-D-6", "E-A-7"], "_digrafo": true, "_id_grafo": "dijkstra", "_max_peso": 1, "_valorado": true, "_vertices": ["A", "B", "C", "D", "E"], "py/object": "model.grafo.Grafo"}
+{"_arestas": ["A-B", "B-D", "A-C", "B-E", "E-F"], "_digrafo": true, "_id_grafo": "20200309074818", "_max_peso": 1, "_valorado": false, "_vertices": ["A", "B", "C", "D", "E", "F"], "py/object": "model.grafo.Grafo"}
+{"_arestas": ["1-2", "1-3", "1-4"], "_digrafo": true, "_id_grafo": "20200309075253", "_max_peso": 1, "_valorado": false, "_vertices": ["1", "2", "3", "4"], "py/object": "model.grafo.Grafo"}

@@ -21,9 +21,9 @@ while True:
         grafo = Grafo.definir_grafo()
         print(Fore.BLUE + "Deseja salvar seu grafo? digite 1 para sim ou 0 "
                           "para não:" + Fore.RESET)
-        cadastrar = bool(input())
-        print()
+        cadastrar = bool(int(input()))
         if cadastrar:
+            print()
             grafo.cadastrar_grafo()
         print()
 
@@ -65,6 +65,7 @@ while True:
         cabecalho("Opção 6 - Obter Vértices Adjacentes")
         grafo, definido = teste_grafo_definido(grafo)
         vertice = input("Informe o vértice: ")
+        print()
         print(grafo.get_adjacentes(vertice))
         if not definido:
             grafo = None
@@ -76,6 +77,7 @@ while True:
         grafo, definido = teste_grafo_definido(grafo)
         origem = input("Informe o vértice inicial: ")
         destino = input("Informe o vértice final: ")
+        print()
         grafo.imprimir_menor_caminho(origem, destino)
         if not definido:
             grafo = None
