@@ -11,6 +11,8 @@ while True:
                      "Imprimir Matriz de Adjacencia",
                      "Imprimir Estrutura de Adjacencia",
                      "Obter Vértices Adjacentes",
+                     "Busca em Largura",
+                     "Busca em Profundidade",
                      "Obter Menor Caminho entre Dois Vértices",
                      "Obter Menores Caminhos a partir de um Vértice",
                      "Sair do sistema"])
@@ -73,7 +75,37 @@ while True:
 
     elif resposta == 7:
         print()
-        cabecalho("Opção 7 - Obter Menor Caminho entre Dois Vértices")
+        cabecalho("Opção 7 - Busca em Largura")
+        grafo, definido = teste_grafo_definido(grafo)
+        vertice = input("Informe o vértice incial ou aperte ENTER para buscar "
+                        "a partir do início: ")
+        print()
+        if vertice:
+            grafo.busca_largura(vertice)
+        else:
+            grafo.busca_largura()
+        if not definido:
+            grafo = None
+        print()
+
+    elif resposta == 8:
+        print()
+        cabecalho("Opção 8 - Busca em Profundidade")
+        grafo, definido = teste_grafo_definido(grafo)
+        vertice = input("Informe o vértice incial ou aperte ENTER para buscar "
+                        "a partir do início: ")
+        print()
+        if vertice:
+            grafo.busca_profundidade(vertice)
+        else:
+            grafo.busca_profundidade()
+        if not definido:
+            grafo = None
+        print()
+
+    elif resposta == 9:
+        print()
+        cabecalho("Opção 9 - Obter Menor Caminho entre Dois Vértices")
         grafo, definido = teste_grafo_definido(grafo)
         origem = input("Informe o vértice inicial: ")
         destino = input("Informe o vértice final: ")
@@ -83,9 +115,9 @@ while True:
             grafo = None
         print()
 
-    elif resposta == 8:
+    elif resposta == 10:
         print()
-        cabecalho("Opção 8 - Obter Menores Caminhos a partir de um Vértice")
+        cabecalho("Opção 10 - Obter Menores Caminhos a partir de um Vértice")
         grafo, definido = teste_grafo_definido(grafo)
         origem = input("Informe o vértice inicial: ")
         grafo.imprimir_menor_caminho(origem)
@@ -93,7 +125,7 @@ while True:
             grafo = None
         print()
 
-    elif resposta == 9:
+    elif resposta == 11:
         print()
         cabecalho("Saindo do sistema... Até logo!")
         sleep(1)
@@ -101,6 +133,6 @@ while True:
 
     else:
         print(Fore.RED + "ERRO: Por favor, digite um número inteiro entre "
-                         "1 e 8" + Fore.RESET)
+                         "1 e 11" + Fore.RESET)
 
     sleep(1)

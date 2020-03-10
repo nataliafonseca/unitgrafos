@@ -1,4 +1,5 @@
 from lib.interface import *
+from lib.arvore import Arvore
 from prettytable import PrettyTable
 from datetime import datetime
 from jsonpickle import encode, decode
@@ -228,63 +229,78 @@ class Grafo:
             fortemente_conexo = False
         return fortemente_conexo
 
-    def _busca_profundidade_por_componente(self, vertice_inicial):
+    def _profundidade(self, vertice_inicial):
         pilha = [vertice_inicial]
-        vertices_visitados = [vertice_inicial]
-        vertices_explorados = []
+        vertices_visitados = Arvore(vertice_inicial)
 
         while pilha:
             vertice = pilha[-1]
             pilha.pop(-1)
-            vertices_explorados.append(vertice)
             for w in self.get_adjacentes(vertice):
-                if w not in vertices_visitados:
-                    vertices_visitados.append(w)
+                if not vertices_visitados.localizar_nodo(w):
+                    vertices_visitados.inserir_nodo(vertice, w)
                     pilha.append(w)
 
         return vertices_visitados
 
-    def _busca_largura_por_componente(self, vertice_inicial):
+    def _largura(self, vertice_inicial):
         fila = [vertice_inicial]
-        vertices_visitados = [vertice_inicial]
-        vertices_explorados = []
+        vertices_visitados = Arvore(vertice_inicial)
 
         while fila:
             vertice = fila[0]
             fila.pop(0)
-            vertices_explorados.append(vertice)
             for w in self.get_adjacentes(vertice):
-                if w not in vertices_visitados:
-                    vertices_visitados.append(w)
+                if not vertices_visitados.localizar_nodo(w):
+                    vertices_visitados.inserir_nodo(vertice, w)
                     fila.append(w)
 
         return vertices_visitados
 
-    def _busca_geral(self, busca):
-        vertice = self._vertices[0]
+    def _busca_geral(self, busca, vertice_inicial="nao_informado"):
+        if vertice_inicial == "nao_informado":
+            vertice = self._vertices[0]
+        else:
+            vertice = vertice_inicial
         q_componentes = 0
         vertices_visitados = []
+        vv_quantidade = 1
 
-        while len(vertices_visitados) < len(self._vertices):
+        def vv_busca(vertice_buscado):
+            for arvore in vertices_visitados:
+                if arvore.localizar_nodo(vertice_buscado):
+                    return True
+            return False
+
+        while vv_quantidade < len(self._vertices):
             if q_componentes > 0:
                 for v in self._vertices:
-                    if v not in vertices_visitados:
+                    if not vv_busca(v):
                         vertice = v
             if busca == 'largura':
-                vertices_visitados += \
-                    self._busca_largura_por_componente(vertice)
+                vertices_visitados.append(self._largura(vertice))
             elif busca == 'profundidade':
-                vertices_visitados += \
-                    self._busca_profundidade_por_componente(vertice)
+                vertices_visitados.append(self._profundidade(vertice))
             q_componentes += 1
+            vv_quantidade += vertices_visitados[-1].quantidade
 
         return vertices_visitados, q_componentes
 
-    def busca_largura(self):
-        return self._busca_geral('largura')[0]
+    def busca_largura(self, vertice_inicial="nao_informado"):
+        vertices_visitados = self._busca_geral('largura', vertice_inicial)[0]
+        if len(vertices_visitados) == 1:
+            vertices_visitados[0].imprimir()
+        else:
+            for i in range(len(vertices_visitados)):
+                vertices_visitados[i].imprimir()
 
-    def busca_profundidade(self):
-        return self._busca_geral('profundidade')[0]
+    def busca_profundidade(self, vertice_inicial="nao_informado"):
+        vertices_visitados = self._busca_geral('profundidade', vertice_inicial)[0]
+        if len(vertices_visitados) == 1:
+            vertices_visitados[0].imprimir()
+        else:
+            for i in range(len(vertices_visitados)):
+                vertices_visitados[i].imprimir()
 
     def _get_q_componentes(self):
         q_conexos = self._busca_geral('largura')[1]
