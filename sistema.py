@@ -134,5 +134,6 @@ while True:
     else:
         print(Fore.RED + "ERRO: Por favor, digite um número inteiro entre "
                          "1 e 11" + Fore.RESET)
+        print()
 
     sleep(1)
