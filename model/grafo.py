@@ -83,10 +83,10 @@ class Grafo:
         print(f"{Fore.YELLOW}Arestas:{Fore.RESET} {self._arestas}")
         print(f"{Fore.YELLOW}Digrafo:{Fore.RESET} {self._digrafo}")
         print(f"{Fore.YELLOW}Valorado:{Fore.RESET} {self._valorado}")
-        print(f"{Fore.YELLOW}Regular:{Fore.RESET} {self.regular()}")
-        print(f"{Fore.YELLOW}Completo:{Fore.RESET} {self.completo()}")
-        print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.conexo()}")
-        if not self.conexo():
+        print(f"{Fore.YELLOW}Regular:{Fore.RESET} {self.ehRegular()}")
+        print(f"{Fore.YELLOW}Completo:{Fore.RESET} {self.ehCompleto()}")
+        print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.ehConexo()}")
+        if not self.ehConexo():
             print(f"{Fore.YELLOW}Quantidade de componentes conexos: "
                   f"{Fore.RESET}{self._get_q_componentes()['conexos']}")
         if self._digrafo:
@@ -186,7 +186,7 @@ class Grafo:
             x.add_row([f"{Fore.YELLOW}{vertice}{Fore.RESET}"] + grafo[idx])
         print(x)
 
-    def get_adjacentes(self, vertice):
+    def getAdjacentes(self, vertice):
         grafo = self.estrutura_adjacencia()
         adjacentes = []
         for i in grafo[vertice]:
@@ -202,22 +202,22 @@ class Grafo:
             pesos.append(i['peso'])
         return adjacentes, pesos
 
-    def regular(self):
+    def ehRegular(self):
         regular = True
         for idx, vertice in enumerate(self._vertices):
-            if len(self.get_adjacentes(self._vertices[0])) != \
-                    len(self.get_adjacentes(self._vertices[idx])):
+            if len(self.getAdjacentes(self._vertices[0])) != \
+                    len(self.getAdjacentes(self._vertices[idx])):
                 regular = False
         return regular
 
-    def completo(self):
+    def ehCompleto(self):
         completo = True
         for vertice in self._vertices:
-            if len(self.get_adjacentes(vertice)) != len(self._vertices) - 1:
+            if len(self.getAdjacentes(vertice)) != len(self._vertices) - 1:
                 completo = False
         return completo
 
-    def conexo(self):
+    def ehConexo(self):
         conexo = True
         if self._get_q_componentes()['conexos'] > 1:
             conexo = False
@@ -236,7 +236,7 @@ class Grafo:
         while pilha:
             vertice = pilha[-1]
             pilha.pop(-1)
-            for w in self.get_adjacentes(vertice):
+            for w in self.getAdjacentes(vertice):
                 if not vertices_visitados.localizar_nodo(w):
                     vertices_visitados.inserir_nodo(vertice, w)
                     pilha.append(w)
@@ -250,7 +250,7 @@ class Grafo:
         while fila:
             vertice = fila[0]
             fila.pop(0)
-            for w in self.get_adjacentes(vertice):
+            for w in self.getAdjacentes(vertice):
                 if not vertices_visitados.localizar_nodo(w):
                     vertices_visitados.inserir_nodo(vertice, w)
                     fila.append(w)
