@@ -68,7 +68,7 @@ while True:
         grafo, definido = teste_grafo_definido(grafo)
         vertice = input("Informe o vértice: ")
         print()
-        print(grafo.getAdjacentes(vertice))
+        print(grafo.get_adjacentes(vertice))
         if not definido:
             grafo = None
         print()

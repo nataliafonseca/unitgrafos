@@ -10,6 +10,9 @@ color()
 
 
 class Grafo:
+    """
+    Classe para implementação da representação e algorítmos de grafos.
+    """
 
     def __init__(self, digrafo, valorado, vertices, arestas):
         self._id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -21,6 +24,11 @@ class Grafo:
 
     @staticmethod
     def definir_grafo():
+        """
+        Método que solicita informações sobre o grafo (se é direcionado,
+        se é valorado, vértices e arestas) e retorna uma instância da
+        classe Grafo.
+        """
         print(Fore.BLUE + "O grafo é direcionado? Digite 1 para sim ou 0 para "
                           "não:" + Fore.RESET)
         digrafo = bool(int(input()))
@@ -66,6 +74,9 @@ class Grafo:
         return Grafo(digrafo, valorado, vertices, arestas)
 
     def cadastrar_grafo(self):
+        """Método que adiciona as informações da instância da classe
+        Grafo ao arquivo 'grafos.json', permitindo que seja resgatado
+        mais tarde."""
         print(
             Fore.BLUE + "Se desejar, informe uma id para o seu grafo, se "
                         "não, aperte ENTER e ele será salvo com um nome "
@@ -78,15 +89,21 @@ class Grafo:
             grafos_json.write(encode(self) + "\n")
 
     def imprimir_informacoes(self):
+        """
+        Método que imprime as informações do grafo (vértices, arestas,
+        se é digrafo, se é valorado, se é regular, se é completo, se é
+        conexo, a quantidade de componentes conexos e fortemente
+        conexos, se aplicável).
+        """
         cabecalho(Fore.BLUE + f"{self._id_grafo}" + Fore.RESET)
-        print(f"{Fore.YELLOW}vertices:{Fore.RESET} {self._vertices}")
+        print(f"{Fore.YELLOW}Vertices:{Fore.RESET} {self._vertices}")
         print(f"{Fore.YELLOW}Arestas:{Fore.RESET} {self._arestas}")
         print(f"{Fore.YELLOW}Digrafo:{Fore.RESET} {self._digrafo}")
         print(f"{Fore.YELLOW}Valorado:{Fore.RESET} {self._valorado}")
-        print(f"{Fore.YELLOW}Regular:{Fore.RESET} {self.ehRegular()}")
-        print(f"{Fore.YELLOW}Completo:{Fore.RESET} {self.ehCompleto()}")
-        print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.ehConexo()}")
-        if not self.ehConexo():
+        print(f"{Fore.YELLOW}Regular:{Fore.RESET} {self.regular()}")
+        print(f"{Fore.YELLOW}Completo:{Fore.RESET} {self.completo()}")
+        print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.conexo()}")
+        if not self.conexo():
             print(f"{Fore.YELLOW}Quantidade de componentes conexos: "
                   f"{Fore.RESET}{self._get_q_componentes()['conexos']}")
         if self._digrafo:
@@ -97,6 +114,10 @@ class Grafo:
 
     @staticmethod
     def listar_grafos_salvos():
+        """
+        Método que imprime a lista de grafos salvos no arquivo 'grafos.json'
+         e suas informações.
+        """
         with open("grafos.json", "r") as grafos_json:
             for line in grafos_json:
                 grafo = decode(line)
@@ -104,6 +125,10 @@ class Grafo:
 
     @staticmethod
     def resgatar_grafo():
+        """
+        Método que lista os grafos salvos e retorna a instância
+        escolhida pelo usuário.
+        """
         Grafo.listar_grafos_salvos()
         with open("grafos.json", "r") as grafos_json:
             print(
@@ -122,61 +147,79 @@ class Grafo:
                   + Fore.RESET)
 
     def estrutura_adjacencia(self):
-        grafo = {}
+        """
+        Método que retorna um dicionário correspondente à estrutura de
+        adjacencia que representa o grafo.
+        """
+        estrutura_adjacencia = {}
         for i in range(len(self._vertices)):
-            grafo.update({self._vertices[i]: []})
+            estrutura_adjacencia.update({self._vertices[i]: []})
         arestas = self._arestas
         if self._valorado:
             for trio in arestas:
                 i, j, p = trio.replace(" ", "").split("-")
                 p = int(p)
-                grafo[i].append({'vertice_id': j, 'peso': p})
+                estrutura_adjacencia[i].append({'vertice_id': j, 'peso': p})
                 if not self._digrafo:
-                    grafo[j].append({'vertice_id': i, 'peso': p})
+                    estrutura_adjacencia[j].append({'vertice_id': i,
+                                                    'peso': p})
                 if p > self._max_peso:
                     self._max_peso = p
         else:
             for par in arestas:
                 i, j = par.replace(" ", "").split("-")
-                grafo[i].append({'vertice_id': j, 'peso': 1})
+                estrutura_adjacencia[i].append({'vertice_id': j, 'peso': 1})
                 if not self._digrafo:
-                    grafo[j].append({'vertice_id': i, 'peso': 1})
-        return grafo
+                    estrutura_adjacencia[j].append({'vertice_id': i,
+                                                    'peso': 1})
+        return estrutura_adjacencia
 
     def imprimir_estrutura_adjacencia(self):
-        grafo = self.estrutura_adjacencia()
-        wg = len((max(grafo, key=len)))
+        """
+        Metodo que imprime a estutura de adjacencia do grafo, formatada
+        para facilitar a leitura.
+        """
+        estrutura_adjacencia = self.estrutura_adjacencia()
+        wg = len((max(estrutura_adjacencia, key=len)))
         wp = len(str(self._max_peso))
-        for i in grafo:
+        for i in estrutura_adjacencia:
             print(f"{Fore.YELLOW}{i:<{wg}}", end=' -> ')
-            for j in grafo[i]:
+            for j in estrutura_adjacencia[i]:
                 print(f"{Fore.RESET}{j['vertice_id']:<{wg}}"
                       f"_P{j['peso']:<{wp}}", end=' | ')
             print()
 
     def matriz_adjacencia(self):
-        grafo = []
+        """
+        Método que retorna uma matriz correspondente à matriz de
+        adjacencia que representa o grafo.
+        """
+        matriz_adjacencia = []
         for i in range(len(self._vertices)):
-            grafo.append([0] * len(self._vertices))
+            matriz_adjacencia.append([0] * len(self._vertices))
         arestas = self._arestas
         if self._valorado:
             for trio in arestas:
                 i, j, p = trio.replace(" ", "").split("-")
                 i, j = self._vertices.index(i), self._vertices.index(j)
                 p = int(p)
-                grafo[i][j] = p
+                matriz_adjacencia[i][j] = p
                 if not self._digrafo:
-                    grafo[j][i] = p
+                    matriz_adjacencia[j][i] = p
         else:
             for par in arestas:
                 i, j = par.replace(" ", "").split("-")
                 i, j = self._vertices.index(i), self._vertices.index(j)
-                grafo[i][j] = 1
+                matriz_adjacencia[i][j] = 1
                 if not self._digrafo:
-                    grafo[j][i] = 1
-        return grafo
+                    matriz_adjacencia[j][i] = 1
+        return matriz_adjacencia
 
     def imprimir_matriz_adjacencia(self):
+        """
+        Metodo que imprime a matriz de adjacencia do grafo, formatada
+        para facilitar a leitura.
+        """
         grafo = self.matriz_adjacencia()
 
         x = PrettyTable([Fore.YELLOW + "*" + Fore.RESET] +
@@ -186,7 +229,12 @@ class Grafo:
             x.add_row([f"{Fore.YELLOW}{vertice}{Fore.RESET}"] + grafo[idx])
         print(x)
 
-    def getAdjacentes(self, vertice):
+    # TODO: getAdjacentes
+    def get_adjacentes(self, vertice):
+        """
+        Método que recebe um vértice do grafo e retorna uma lista
+        contendo os vértices adjacentes a ele.
+        """
         grafo = self.estrutura_adjacencia()
         adjacentes = []
         for i in grafo[vertice]:
@@ -194,6 +242,11 @@ class Grafo:
         return adjacentes
 
     def _get_adjacentes_e_pesos(self, vertice):
+        """
+        Método privado que recebe um vértice do grafo e retorna uma
+        lista contendo os vértices adjacentes a ele e uma outra lista
+        contendo seus respectivos pesos.
+        """
         grafo = self.estrutura_adjacencia()
         adjacentes = []
         pesos = []
@@ -202,41 +255,65 @@ class Grafo:
             pesos.append(i['peso'])
         return adjacentes, pesos
 
-    def ehRegular(self):
+    # TODO: ehRegular
+    def regular(self):
+        """
+        Método que retorna verdadeiro se o grafo for regular ou falso se
+         não for.
+        """
         regular = True
         for idx, vertice in enumerate(self._vertices):
-            if len(self.getAdjacentes(self._vertices[0])) != \
-                    len(self.getAdjacentes(self._vertices[idx])):
+            if len(self.get_adjacentes(self._vertices[0])) != \
+                    len(self.get_adjacentes(self._vertices[idx])):
                 regular = False
         return regular
 
-    def ehCompleto(self):
+    # TODO: ehCompleto
+    def completo(self):
+        """
+        Método que retorna verdadeiro se o grafo for completo ou falso
+        se não for.
+        """
         completo = True
         for vertice in self._vertices:
-            if len(self.getAdjacentes(vertice)) != len(self._vertices) - 1:
+            if len(self.get_adjacentes(vertice)) != len(self._vertices) - 1:
                 completo = False
         return completo
 
-    def ehConexo(self):
+    # TODO: ehConexo
+    def conexo(self):
+        """
+        Método que retorna verdadeiro se o grafo for conexo ou falso se
+        não for.
+        """
         conexo = True
         if self._get_q_componentes()['conexos'] > 1:
             conexo = False
         return conexo
 
     def fortemente_conexo(self):
+        """
+        Método que retorna verdadeiro se o grafo for fortemente conexo
+        ou falso se não for.
+        """
         fortemente_conexo = True
         if self._get_q_componentes()['fortes'] > 1:
             fortemente_conexo = False
         return fortemente_conexo
 
     def _profundidade(self, vertice_inicial):
+        """
+        Método privado que aplica a lógica da busca em profunidade,
+        recebendo um vértice inicial e buscando até que se zere a pilha,
+         o retorno é a lista de vértices visitados, em ordem.
+        """
         pilha = [vertice_inicial]
         vertices_visitados = Arvore(vertice_inicial)
 
         while pilha:
             vertice = pilha[-1]
             pilha.pop(-1)
-            for w in self.getAdjacentes(vertice):
+            for w in self.get_adjacentes(vertice):
                 if not vertices_visitados.localizar_nodo(w):
                     vertices_visitados.inserir_nodo(vertice, w)
                     pilha.append(w)
@@ -244,13 +321,18 @@ class Grafo:
         return vertices_visitados
 
     def _largura(self, vertice_inicial):
+        """
+        Método privado que aplica a lógica da busca em largura,
+        recebendo um vértice inicial e buscando até que se zere a fila,
+         o retorno é a árvore de vértices visitados, em ordem.
+        """
         fila = [vertice_inicial]
         vertices_visitados = Arvore(vertice_inicial)
 
         while fila:
             vertice = fila[0]
             fila.pop(0)
-            for w in self.getAdjacentes(vertice):
+            for w in self.get_adjacentes(vertice):
                 if not vertices_visitados.localizar_nodo(w):
                     vertices_visitados.inserir_nodo(vertice, w)
                     fila.append(w)
@@ -258,6 +340,13 @@ class Grafo:
         return vertices_visitados
 
     def _busca_geral(self, busca, vertice_inicial="nao_informado"):
+        """
+        Método privado para repetição da busca em profundidade ou
+        em largura até que todos os vértices do grafo tenham sido
+        visitados. Devem ser informados o tipo de busca e,
+        opcionalmente, o vértice inicial. Retorna a árvore completa de
+        vértices visitados e a quantidade de componentes do grafo.
+        """
         if vertice_inicial == "nao_informado":
             vertice = self._vertices[0]
         else:
@@ -287,6 +376,10 @@ class Grafo:
         return vertices_visitados, q_componentes
 
     def busca_largura(self, vertice_inicial="nao_informado"):
+        """
+        Método para impreção da árvore de busca em largura, formatada
+        para falicitar a leitura.
+        """
         vertices_visitados = self._busca_geral('largura', vertice_inicial)[0]
         if len(vertices_visitados) == 1:
             vertices_visitados[0].imprimir()
@@ -295,14 +388,25 @@ class Grafo:
                 vertices_visitados[i].imprimir()
 
     def busca_profundidade(self, vertice_inicial="nao_informado"):
-        vertices_visitados = self._busca_geral('profundidade', vertice_inicial)[0]
+        """
+        Método para impreção da árvore de busca em profundidade,
+        formatada para falicitar a leitura.
+        """
+        vertices_visitados = \
+            self._busca_geral('profundidade', vertice_inicial)[0]
         if len(vertices_visitados) == 1:
             vertices_visitados[0].imprimir()
         else:
             for i in range(len(vertices_visitados)):
                 vertices_visitados[i].imprimir()
 
+    # TODO: Refazer o algoritmo de calculo dos componentes fortemente
+    #  conexos, utilizando algoritmo correto!
     def _get_q_componentes(self):
+        """
+        Método privado que retorna a quantidade de componentes conexos
+        e de componentes fortemente conexos.
+        """
         q_conexos = self._busca_geral('largura')[1]
         q_fortemente_conexos = q_conexos
         if self._digrafo:
@@ -311,7 +415,12 @@ class Grafo:
             self._digrafo = True
         return {'conexos': q_conexos, 'fortes': q_fortemente_conexos}
 
-    def _dijkstra(self, v_origem):
+    def dijkstra(self, v_origem):
+        """
+        Implementação do algoritmo de djikstra. Recebe o vértice de
+        origem e retorna listas de distância e 'path' para todos os
+        vértices do grafo.
+        """
         dist = [float('inf') for i in range(len(self._vertices))]
         path = ['-' for i in range(len(self._vertices))]
         s = [v_origem]
@@ -347,8 +456,13 @@ class Grafo:
 
         return dist, path
 
-    def _get_caminho(self, v_origem, v_destino):
-        path = self._dijkstra(v_origem)[1]
+    def get_caminho(self, v_origem, v_destino):
+        """
+        Utiliza o retorno do método djikstra para retornar o menor
+        caminho completo entre dois vértices. Devem ser informados
+        vértice de origem e vértice de destino.
+        """
+        path = self.dijkstra(v_origem)[1]
         caminho = [v_destino]
         v = v_destino
         while v != v_origem:
@@ -358,7 +472,10 @@ class Grafo:
         return caminho
 
     def _caminho_format(self, v_origem, v_destino):
-        caminho = self._get_caminho(v_origem, v_destino)
+        """
+        Formata a saída do método get_caminho.
+        """
+        caminho = self.get_caminho(v_origem, v_destino)
         c_form = f"{Fore.YELLOW}{caminho[0]}{Fore.RESET} > "
         for vertice in caminho[1:-1:]:
             c_form += f"{vertice} > "
@@ -366,7 +483,15 @@ class Grafo:
         return c_form
 
     def imprimir_menor_caminho(self, v_origem, v_destino="todos"):
-        dist, path = self._dijkstra(v_origem)
+        """
+        Método utilizado para formatar e imprimir o resultado do
+        algoritmo de dijskstra. Deve receber o vértice de origem e,
+        opcionalmente, o vértice de destino. Se o vértice de destino
+        for informado, será impresso o caminho entre os dois vértices e
+        a distância entre eles. Caso não seja informado, será impressa
+        uma tabela com essas informações para cada vértice do grafo.
+        """
+        dist, path = self.dijkstra(v_origem)
 
         if v_destino == "todos":
             x = PrettyTable([f"{Fore.BLUE}vertice{Fore.RESET}",
