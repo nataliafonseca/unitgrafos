@@ -106,11 +106,13 @@ class Grafo:
         if not self.conexo():
             print(f"{Fore.YELLOW}Quantidade de componentes conexos: "
                   f"{Fore.RESET}{self.get_q_componentes_conexos()}")
-        # if self._digrafo:
-        #     if not self.fortemente_conexo():
-        #         print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
-        #               f"conexos:{Fore.RESET} "
-        #               f"{self.get_q_componentes_conexos()['fortes']}")
+        if self._digrafo:
+            print(f"{Fore.YELLOW}Fortemente Conexo:{Fore.RESET} "
+                  f"{self.fortemente_conexo()}")
+            if not self.fortemente_conexo():
+                print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
+                      f"conexos:{Fore.RESET} "
+                      f"{self.get_q_componente_fortemente_conexos()}")
 
     @staticmethod
     def listar_grafos_salvos():
@@ -411,7 +413,7 @@ class Grafo:
                         break
 
             vertices_visitados.append(self._profundidade(vertice)['visitados'])
-            lista_posordem.append(self._profundidade(vertice)['posordem'])
+            lista_posordem += self._profundidade(vertice)['posordem']
             q_componentes += 1
             # soma-se a q_vertices_visitados a quantidade de vértices
             # presentes na árvore adicionada à lista!
@@ -566,9 +568,9 @@ class Grafo:
         grafo_invertido = self._inverter_arestas()
         q_componentes = 0
         while posordem:
-            visitados = \
-                grafo_invertido._profundidade(posordem[-1])['visitados']
-            for vertice in visitados.nodos:
+            explorados = \
+                grafo_invertido._profundidade(posordem[-1])['posordem']
+            for vertice in explorados:
                 if vertice in posordem:
                     posordem.remove(vertice)
             q_componentes += 1
