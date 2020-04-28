@@ -15,6 +15,13 @@ class Grafo:
     """
 
     def __init__(self, digrafo, valorado, vertices, arestas):
+        """
+        Construtor da Classe
+        :param digrafo: True se o grafo for direcionado, False se não.
+        :param valorado: True se o grafo for valorado, False se não.
+        :param vertices: Lista de Vértices do grafo.
+        :param arestas: Lista de Arestas do grafo.
+        """
         self._id_grafo = f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
         self._digrafo = digrafo
         self._valorado = valorado
@@ -92,8 +99,8 @@ class Grafo:
         """
         Método que imprime as informações do grafo (vértices, arestas,
         se é digrafo, se é valorado, se é regular, se é completo, se é
-        conexo, a quantidade de componentes conexos e fortemente
-        conexos, se aplicável).
+        conexo, fortemente conexo, a quantidade de componentes conexos
+        e fortemente conexos, se aplicável).
         """
         cabecalho(Fore.BLUE + f"{self._id_grafo}" + Fore.RESET)
         print(f"{Fore.YELLOW}Vertices:{Fore.RESET} {self._vertices}")
@@ -585,19 +592,3 @@ class Grafo:
         if self.get_q_componente_fortemente_conexos() > 1:
             forte = False
         return forte
-
-    # <editor-fold desc="Métodos para testes">
-    # Métodos abaixo são redundantes, criados apenas para obedecer os
-    # nomes recomendados pelo professor para facilitar testes
-    def getAdjacentes(self, vertice):
-        return self.get_adjacentes(vertice)
-
-    def ehRegular(self):
-        return self.regular()
-
-    def ehCompleto(self):
-        return self.completo()
-
-    def ehConexo(self):
-        return self.conexo()
-    # </editor-fold>

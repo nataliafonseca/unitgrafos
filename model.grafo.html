@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module model.grafo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="model.html"><font color="#ffffff">model</font></a>.grafo</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:g%3A%5Cmeu%20drive%5Cprojetos%5Cunitgrafos%5Cmodel%5Cgrafo.py">g:\meu drive\projetos\unitgrafos\model\grafo.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="model.grafo.html#Grafo">Grafo</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Grafo">class <strong>Grafo</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Grafo">Grafo</a>(digrafo,&nbsp;valorado,&nbsp;vertices,&nbsp;arestas)<br>
+&nbsp;<br>
+Classe&nbsp;para&nbsp;implementação&nbsp;da&nbsp;representação&nbsp;e&nbsp;algorítmos&nbsp;de&nbsp;grafos.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Grafo-__init__"><strong>__init__</strong></a>(self, digrafo, valorado, vertices, arestas)</dt><dd><tt>Construtor&nbsp;da&nbsp;Classe<br>
+:param&nbsp;digrafo:&nbsp;True&nbsp;se&nbsp;o&nbsp;grafo&nbsp;for&nbsp;direcionado,&nbsp;False&nbsp;se&nbsp;não.<br>
+:param&nbsp;valorado:&nbsp;True&nbsp;se&nbsp;o&nbsp;grafo&nbsp;for&nbsp;valorado,&nbsp;False&nbsp;se&nbsp;não.<br>
+:param&nbsp;vertices:&nbsp;Lista&nbsp;de&nbsp;Vértices&nbsp;do&nbsp;grafo.<br>
+:param&nbsp;arestas:&nbsp;Lista&nbsp;de&nbsp;Arestas&nbsp;do&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-busca_largura"><strong>busca_largura</strong></a>(self, vertice_inicial='nao_informado')</dt><dd><tt>Método&nbsp;para&nbsp;repetição&nbsp;da&nbsp;lógica&nbsp;de&nbsp;busca&nbsp;em&nbsp;largura&nbsp;até&nbsp;que<br>
+todos&nbsp;os&nbsp;vértices&nbsp;do&nbsp;grafo&nbsp;tenham&nbsp;sido&nbsp;visitados.&nbsp;Recebe,<br>
+opcionalmente,&nbsp;o&nbsp;vértice&nbsp;inicial.&nbsp;Retorna&nbsp;a&nbsp;árvore&nbsp;completa&nbsp;de<br>
+vértices&nbsp;visitados.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-busca_profundidade"><strong>busca_profundidade</strong></a>(self, vertice_inicial='nao_informado')</dt><dd><tt>Método&nbsp;para&nbsp;repetição&nbsp;da&nbsp;lógica&nbsp;de&nbsp;busca&nbsp;em&nbsp;profundidade&nbsp;até&nbsp;que<br>
+todos&nbsp;os&nbsp;vértices&nbsp;do&nbsp;grafo&nbsp;tenham&nbsp;sido&nbsp;visitados.&nbsp;Recebe,<br>
+opcionalmente,&nbsp;o&nbsp;vértice&nbsp;inicial.&nbsp;Retorna&nbsp;a&nbsp;árvore&nbsp;completa&nbsp;de<br>
+vértices&nbsp;visitados.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-cadastrar_grafo"><strong>cadastrar_grafo</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;adiciona&nbsp;as&nbsp;informações&nbsp;da&nbsp;instância&nbsp;da&nbsp;classe<br>
+<a href="#Grafo">Grafo</a>&nbsp;ao&nbsp;arquivo&nbsp;'grafos.json',&nbsp;permitindo&nbsp;que&nbsp;seja&nbsp;resgatado<br>
+mais&nbsp;tarde.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-completo"><strong>completo</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;retorna&nbsp;verdadeiro&nbsp;se&nbsp;o&nbsp;grafo&nbsp;for&nbsp;completo&nbsp;ou&nbsp;falso<br>
+se&nbsp;não&nbsp;for.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-conexo"><strong>conexo</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;retorna&nbsp;verdadeiro&nbsp;se&nbsp;o&nbsp;grafo&nbsp;for&nbsp;conexo&nbsp;ou&nbsp;falso&nbsp;se<br>
+não&nbsp;for.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-dijkstra"><strong>dijkstra</strong></a>(self, v_origem)</dt><dd><tt>Implementação&nbsp;do&nbsp;algoritmo&nbsp;de&nbsp;djikstra.&nbsp;Recebe&nbsp;o&nbsp;vértice&nbsp;de<br>
+origem&nbsp;e&nbsp;retorna&nbsp;listas&nbsp;de&nbsp;distância&nbsp;e&nbsp;'path'&nbsp;para&nbsp;todos&nbsp;os<br>
+vértices&nbsp;do&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-estrutura_adjacencia"><strong>estrutura_adjacencia</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;retorna&nbsp;um&nbsp;dicionário&nbsp;correspondente&nbsp;à&nbsp;estrutura&nbsp;de<br>
+adjacencia&nbsp;que&nbsp;representa&nbsp;o&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-fortemente_conexo"><strong>fortemente_conexo</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;retorna&nbsp;verdadeiro&nbsp;se&nbsp;o&nbsp;grafo&nbsp;for&nbsp;fortemente&nbsp;conexo<br>
+ou&nbsp;falso&nbsp;se&nbsp;não&nbsp;for.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-get_adjacentes"><strong>get_adjacentes</strong></a>(self, vertice)</dt><dd><tt>Método&nbsp;que&nbsp;recebe&nbsp;um&nbsp;vértice&nbsp;do&nbsp;grafo&nbsp;e&nbsp;retorna&nbsp;uma&nbsp;lista<br>
+contendo&nbsp;os&nbsp;vértices&nbsp;adjacentes&nbsp;a&nbsp;ele.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-get_menor_caminho"><strong>get_menor_caminho</strong></a>(self, v_origem, v_destino)</dt><dd><tt>Utiliza&nbsp;o&nbsp;retorno&nbsp;do&nbsp;método&nbsp;djikstra&nbsp;para&nbsp;retornar&nbsp;o&nbsp;menor<br>
+caminho&nbsp;completo&nbsp;entre&nbsp;dois&nbsp;vértices.&nbsp;Devem&nbsp;ser&nbsp;informados<br>
+vértice&nbsp;de&nbsp;origem&nbsp;e&nbsp;vértice&nbsp;de&nbsp;destino.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-get_q_componente_fortemente_conexos"><strong>get_q_componente_fortemente_conexos</strong></a>(self)</dt><dd><tt>Retorna&nbsp;a&nbsp;quantidade&nbsp;de&nbsp;componentes&nbsp;fortemente&nbsp;conexos&nbsp;no&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-get_q_componentes_conexos"><strong>get_q_componentes_conexos</strong></a>(self)</dt><dd><tt>Retorna&nbsp;a&nbsp;quantidade&nbsp;de&nbsp;componentes&nbsp;conexos&nbsp;no&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-imprimir_busca_largura"><strong>imprimir_busca_largura</strong></a>(self, vertice_inicial='nao_informado')</dt><dd><tt>Método&nbsp;para&nbsp;impreção&nbsp;da&nbsp;árvore&nbsp;de&nbsp;busca&nbsp;em&nbsp;largura,&nbsp;formatada<br>
+para&nbsp;falicitar&nbsp;a&nbsp;leitura.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-imprimir_busca_profundidade"><strong>imprimir_busca_profundidade</strong></a>(self, vertice_inicial='nao_informado')</dt><dd><tt>Método&nbsp;para&nbsp;impreção&nbsp;da&nbsp;árvore&nbsp;de&nbsp;busca&nbsp;em&nbsp;profundidade,<br>
+formatada&nbsp;para&nbsp;falicitar&nbsp;a&nbsp;leitura.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-imprimir_estrutura_adjacencia"><strong>imprimir_estrutura_adjacencia</strong></a>(self)</dt><dd><tt>Metodo&nbsp;que&nbsp;imprime&nbsp;a&nbsp;estutura&nbsp;de&nbsp;adjacencia&nbsp;do&nbsp;grafo,&nbsp;formatada<br>
+para&nbsp;facilitar&nbsp;a&nbsp;leitura.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-imprimir_informacoes"><strong>imprimir_informacoes</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;imprime&nbsp;as&nbsp;informações&nbsp;do&nbsp;grafo&nbsp;(vértices,&nbsp;arestas,<br>
+se&nbsp;é&nbsp;digrafo,&nbsp;se&nbsp;é&nbsp;valorado,&nbsp;se&nbsp;é&nbsp;regular,&nbsp;se&nbsp;é&nbsp;completo,&nbsp;se&nbsp;é<br>
+conexo,&nbsp;fortemente&nbsp;conexo,&nbsp;a&nbsp;quantidade&nbsp;de&nbsp;componentes&nbsp;conexos<br>
+e&nbsp;fortemente&nbsp;conexos,&nbsp;se&nbsp;aplicável).</tt></dd></dl>
+
+<dl><dt><a name="Grafo-imprimir_matriz_adjacencia"><strong>imprimir_matriz_adjacencia</strong></a>(self)</dt><dd><tt>Metodo&nbsp;que&nbsp;imprime&nbsp;a&nbsp;matriz&nbsp;de&nbsp;adjacencia&nbsp;do&nbsp;grafo,&nbsp;formatada<br>
+para&nbsp;facilitar&nbsp;a&nbsp;leitura.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-imprimir_menor_caminho"><strong>imprimir_menor_caminho</strong></a>(self, v_origem, v_destino='todos')</dt><dd><tt>Método&nbsp;utilizado&nbsp;para&nbsp;formatar&nbsp;e&nbsp;imprimir&nbsp;o&nbsp;resultado&nbsp;do<br>
+algoritmo&nbsp;de&nbsp;dijskstra.&nbsp;Deve&nbsp;receber&nbsp;o&nbsp;vértice&nbsp;de&nbsp;origem&nbsp;e,<br>
+opcionalmente,&nbsp;o&nbsp;vértice&nbsp;de&nbsp;destino.&nbsp;Se&nbsp;o&nbsp;vértice&nbsp;de&nbsp;destino<br>
+for&nbsp;informado,&nbsp;será&nbsp;impresso&nbsp;o&nbsp;caminho&nbsp;entre&nbsp;os&nbsp;dois&nbsp;vértices&nbsp;e<br>
+a&nbsp;distância&nbsp;entre&nbsp;eles.&nbsp;Caso&nbsp;não&nbsp;seja&nbsp;informado,&nbsp;será&nbsp;impressa<br>
+uma&nbsp;tabela&nbsp;com&nbsp;essas&nbsp;informações&nbsp;para&nbsp;cada&nbsp;vértice&nbsp;do&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-matriz_adjacencia"><strong>matriz_adjacencia</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;retorna&nbsp;uma&nbsp;matriz&nbsp;correspondente&nbsp;à&nbsp;matriz&nbsp;de<br>
+adjacencia&nbsp;que&nbsp;representa&nbsp;o&nbsp;grafo.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-regular"><strong>regular</strong></a>(self)</dt><dd><tt>Método&nbsp;que&nbsp;retorna&nbsp;verdadeiro&nbsp;se&nbsp;o&nbsp;grafo&nbsp;for&nbsp;regular&nbsp;ou&nbsp;falso&nbsp;se<br>
+&nbsp;não&nbsp;for.</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Grafo-definir_grafo"><strong>definir_grafo</strong></a>()</dt><dd><tt>Método&nbsp;que&nbsp;solicita&nbsp;informações&nbsp;sobre&nbsp;o&nbsp;grafo&nbsp;(se&nbsp;é&nbsp;direcionado,<br>
+se&nbsp;é&nbsp;valorado,&nbsp;vértices&nbsp;e&nbsp;arestas)&nbsp;e&nbsp;retorna&nbsp;uma&nbsp;instância&nbsp;da<br>
+classe&nbsp;<a href="#Grafo">Grafo</a>.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-listar_grafos_salvos"><strong>listar_grafos_salvos</strong></a>()</dt><dd><tt>Método&nbsp;que&nbsp;imprime&nbsp;a&nbsp;lista&nbsp;de&nbsp;grafos&nbsp;salvos&nbsp;no&nbsp;arquivo&nbsp;'grafos.json'<br>
+&nbsp;e&nbsp;suas&nbsp;informações.</tt></dd></dl>
+
+<dl><dt><a name="Grafo-resgatar_grafo"><strong>resgatar_grafo</strong></a>()</dt><dd><tt>Método&nbsp;que&nbsp;lista&nbsp;os&nbsp;grafos&nbsp;salvos&nbsp;e&nbsp;retorna&nbsp;a&nbsp;instância<br>
+escolhida&nbsp;pelo&nbsp;usuário.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>Fore</strong> = &lt;colorama.ansi.AnsiFore object&gt;</td></tr></table>
+</body></html>
