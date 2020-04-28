@@ -15,6 +15,7 @@ while True:
                      "Busca em Profundidade",
                      "Obter Menor Caminho entre Dois Vértices",
                      "Obter Menores Caminhos a partir de um Vértice",
+                     "Colorir Grafo",
                      "Sair do sistema"])
 
     if resposta == 1:
@@ -126,6 +127,15 @@ while True:
         print()
 
     elif resposta == 11:
+        print()
+        cabecalho("Opção 11 - Colorir Grafo")
+        grafo, definido = teste_grafo_definido(grafo)
+        grafo.imprimir_coloracao()
+        if not definido:
+            grafo = None
+        print()
+
+    elif resposta == 12:
         print()
         cabecalho("Saindo do sistema... Até logo!")
         sleep(1)

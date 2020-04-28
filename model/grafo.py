@@ -592,3 +592,32 @@ class Grafo:
         if self.get_q_componente_fortemente_conexos() > 1:
             forte = False
         return forte
+
+    def coloracao(self):
+        """
+        Método que aplica coloração ao grafo.
+        """
+        cores = [[]]
+
+        for vertice in self._vertices:
+            ha_adjacente = False
+            for idx, lista in enumerate(cores):
+                ha_adjacente = False
+                for adjacente in self.get_adjacentes(vertice):
+                    if adjacente in cores[idx]:
+                        ha_adjacente = True
+                        break
+                if not ha_adjacente:
+                    lista.append(vertice)
+                    break
+            if ha_adjacente:
+                cores.append([vertice])
+        return cores
+
+    def imprimir_coloracao(self):
+        """
+        Imprime a coloração do grafo, formatada para facilitar a
+        leitura.
+        """
+        for idx, cor in enumerate(self.coloracao()):
+            print(f"{Fore.YELLOW}COR {idx+1}:{Fore.RESET} {cor}")
