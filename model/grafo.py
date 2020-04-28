@@ -105,12 +105,12 @@ class Grafo:
         print(f"{Fore.YELLOW}Conexo:{Fore.RESET} {self.conexo()}")
         if not self.conexo():
             print(f"{Fore.YELLOW}Quantidade de componentes conexos: "
-                  f"{Fore.RESET}{self._get_q_componentes()['conexos']}")
-        if self._digrafo:
-            if not self.fortemente_conexo():
-                print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
-                      f"conexos:{Fore.RESET} "
-                      f"{self._get_q_componentes()['fortes']}")
+                  f"{Fore.RESET}{self.get_q_componentes_conexos()}")
+        # if self._digrafo:
+        #     if not self.fortemente_conexo():
+        #         print(f"{Fore.YELLOW}Quantidade de componentes fortemente "
+        #               f"conexos:{Fore.RESET} "
+        #               f"{self.get_q_componentes_conexos()['fortes']}")
 
     @staticmethod
     def listar_grafos_salvos():
@@ -229,7 +229,6 @@ class Grafo:
             x.add_row([f"{Fore.YELLOW}{vertice}{Fore.RESET}"] + grafo[idx])
         print(x)
 
-    # TODO: getAdjacentes
     def get_adjacentes(self, vertice):
         """
         Método que recebe um vértice do grafo e retorna uma lista
@@ -255,7 +254,6 @@ class Grafo:
             pesos.append(i['peso'])
         return adjacentes, pesos
 
-    # TODO: ehRegular
     def regular(self):
         """
         Método que retorna verdadeiro se o grafo for regular ou falso se
@@ -268,7 +266,6 @@ class Grafo:
                 regular = False
         return regular
 
-    # TODO: ehCompleto
     def completo(self):
         """
         Método que retorna verdadeiro se o grafo for completo ou falso
@@ -280,45 +277,15 @@ class Grafo:
                 completo = False
         return completo
 
-    # TODO: ehConexo
     def conexo(self):
         """
         Método que retorna verdadeiro se o grafo for conexo ou falso se
         não for.
         """
         conexo = True
-        if self._get_q_componentes()['conexos'] > 1:
+        if self.get_q_componentes_conexos() > 1:
             conexo = False
         return conexo
-
-    def fortemente_conexo(self):
-        """
-        Método que retorna verdadeiro se o grafo for fortemente conexo
-        ou falso se não for.
-        """
-        fortemente_conexo = True
-        if self._get_q_componentes()['fortes'] > 1:
-            fortemente_conexo = False
-        return fortemente_conexo
-
-    def _profundidade(self, vertice_inicial):
-        """
-        Método privado que aplica a lógica da busca em profunidade,
-        recebendo um vértice inicial e buscando até que se zere a pilha,
-         o retorno é a lista de vértices visitados, em ordem.
-        """
-        pilha = [vertice_inicial]
-        vertices_visitados = Arvore(vertice_inicial)
-
-        while pilha:
-            vertice = pilha[-1]
-            pilha.pop(-1)
-            for w in self.get_adjacentes(vertice):
-                if not vertices_visitados.localizar_nodo(w):
-                    vertices_visitados.inserir_nodo(vertice, w)
-                    pilha.append(w)
-
-        return vertices_visitados
 
     def _largura(self, vertice_inicial):
         """
@@ -339,13 +306,12 @@ class Grafo:
 
         return vertices_visitados
 
-    def _busca_geral(self, busca, vertice_inicial="nao_informado"):
+    def busca_largura(self, vertice_inicial="nao_informado"):
         """
-        Método privado para repetição da busca em profundidade ou
-        em largura até que todos os vértices do grafo tenham sido
-        visitados. Devem ser informados o tipo de busca e,
+        Método para repetição da lógica de busca em largura até que
+        todos os vértices do grafo tenham sido visitados. Recebe,
         opcionalmente, o vértice inicial. Retorna a árvore completa de
-        vértices visitados e a quantidade de componentes do grafo.
+        vértices visitados.
         """
         if vertice_inicial == "nao_informado":
             vertice = self._vertices[0]
@@ -353,67 +319,128 @@ class Grafo:
             vertice = vertice_inicial
         q_componentes = 0
         vertices_visitados = []
-        vv_quantidade = 1
+        q_vertices_visitados = 0
 
-        def vv_busca(vertice_buscado):
-            for arvore in vertices_visitados:
-                if arvore.localizar_nodo(vertice_buscado):
-                    return True
-            return False
+        while q_vertices_visitados < len(self._vertices):
 
-        while vv_quantidade < len(self._vertices):
             if q_componentes > 0:
                 for v in self._vertices:
-                    if not vv_busca(v):
+                    visitado = False
+                    for arvore in vertices_visitados:
+                        if arvore.localizar_nodo(v):
+                            visitado = True
+                            break
+                    if not visitado:
                         vertice = v
-            if busca == 'largura':
-                vertices_visitados.append(self._largura(vertice))
-            elif busca == 'profundidade':
-                vertices_visitados.append(self._profundidade(vertice))
+                        break
+
+            vertices_visitados.append(self._largura(vertice))
             q_componentes += 1
-            vv_quantidade += vertices_visitados[-1].quantidade
+            # soma-se a q_vertices_visitados a quantidade de vértices
+            # presentes na árvore adicionada à lista!
+            q_vertices_visitados += vertices_visitados[-1].quantidade
 
-        return vertices_visitados, q_componentes
+        return {'visitados': vertices_visitados,
+                'q_componentes': q_componentes}
 
-    def busca_largura(self, vertice_inicial="nao_informado"):
+    def imprimir_busca_largura(self, vertice_inicial="nao_informado"):
         """
         Método para impreção da árvore de busca em largura, formatada
         para falicitar a leitura.
         """
-        vertices_visitados = self._busca_geral('largura', vertice_inicial)[0]
-        if len(vertices_visitados) == 1:
-            vertices_visitados[0].imprimir()
-        else:
-            for i in range(len(vertices_visitados)):
-                vertices_visitados[i].imprimir()
+        vertices_visitados = self.busca_largura(vertice_inicial)['visitados']
+        # vertices_visitados = self._busca_geral('largura', vertice_inicial)[0]
+        for i in range(len(vertices_visitados)):
+            vertices_visitados[i].imprimir()
+
+    def _profundidade(self, vertice_inicial):
+        """
+        Método privado que aplica a lógica da busca em profunidade,
+        recebendo um vértice inicial e buscando até que se zere a pilha,
+         o retorno é a lista de vértices visitados, em ordem.
+        """
+        pilha = [vertice_inicial]
+        vertices_visitados = Arvore(vertice_inicial)
+        lista_posordem = []
+
+        while pilha:
+            vertice = pilha[-1]
+            explorado = True
+            for w in self.get_adjacentes(vertice):
+                if not vertices_visitados.localizar_nodo(w):
+                    explorado = False
+                    break
+            if explorado:
+                lista_posordem.append(pilha[-1])
+                pilha.pop(-1)
+            for w in self.get_adjacentes(vertice):
+                if not vertices_visitados.localizar_nodo(w):
+                    vertices_visitados.inserir_nodo(vertice, w)
+                    pilha.append(w)
+                    break
+
+        return {'visitados': vertices_visitados, 'posordem': lista_posordem}
 
     def busca_profundidade(self, vertice_inicial="nao_informado"):
+        """
+        Método para repetição da lógica de busca em profundidade até que
+        todos os vértices do grafo tenham sido visitados. Recebe,
+        opcionalmente, o vértice inicial. Retorna a árvore completa de
+        vértices visitados.
+        """
+        if vertice_inicial == "nao_informado":
+            vertice = self._vertices[0]
+        else:
+            vertice = vertice_inicial
+        q_componentes = 0
+        vertices_visitados = []
+        lista_posordem = []
+        q_vertices_visitados = 0
+
+        while q_vertices_visitados < len(self._vertices):
+
+            if q_componentes > 0:
+                for v in self._vertices:
+                    visitado = False
+                    for arvore in vertices_visitados:
+                        if arvore.localizar_nodo(v):
+                            visitado = True
+                            break
+                    if not visitado:
+                        vertice = v
+                        break
+
+            vertices_visitados.append(self._profundidade(vertice)['visitados'])
+            lista_posordem.append(self._profundidade(vertice)['posordem'])
+            q_componentes += 1
+            # soma-se a q_vertices_visitados a quantidade de vértices
+            # presentes na árvore adicionada à lista!
+            q_vertices_visitados += vertices_visitados[-1].quantidade
+
+        return {'visitados': vertices_visitados,
+                'q_componentes': q_componentes,
+                'posordem': lista_posordem}
+
+    def imprimir_busca_profundidade(self, vertice_inicial="nao_informado"):
         """
         Método para impreção da árvore de busca em profundidade,
         formatada para falicitar a leitura.
         """
         vertices_visitados = \
-            self._busca_geral('profundidade', vertice_inicial)[0]
-        if len(vertices_visitados) == 1:
-            vertices_visitados[0].imprimir()
-        else:
-            for i in range(len(vertices_visitados)):
-                vertices_visitados[i].imprimir()
+            self.busca_profundidade(vertice_inicial)['visitados']
+        for i in range(len(vertices_visitados)):
+            vertices_visitados[i].imprimir()
 
-    # TODO: Refazer o algoritmo de calculo dos componentes fortemente
-    #  conexos, utilizando algoritmo correto!
-    def _get_q_componentes(self):
+    def get_q_componentes_conexos(self):
         """
-        Método privado que retorna a quantidade de componentes conexos
-        e de componentes fortemente conexos.
+        Retorna a quantidade de componentes conexos no grafo.
         """
-        q_conexos = self._busca_geral('largura')[1]
-        q_fortemente_conexos = q_conexos
+        q_conexos = self.busca_largura()['q_componentes']
         if self._digrafo:
             self._digrafo = False
-            q_conexos = self._busca_geral('largura')[1]
+            q_conexos = self.busca_largura()['q_componentes']
             self._digrafo = True
-        return {'conexos': q_conexos, 'fortes': q_fortemente_conexos}
+        return q_conexos
 
     def dijkstra(self, v_origem):
         """
@@ -456,7 +483,7 @@ class Grafo:
 
         return dist, path
 
-    def get_caminho(self, v_origem, v_destino):
+    def get_menor_caminho(self, v_origem, v_destino):
         """
         Utiliza o retorno do método djikstra para retornar o menor
         caminho completo entre dois vértices. Devem ser informados
@@ -473,9 +500,9 @@ class Grafo:
 
     def _caminho_format(self, v_origem, v_destino):
         """
-        Formata a saída do método get_caminho.
+        Método privado que formata a saída do método get_menor_caminho.
         """
-        caminho = self.get_caminho(v_origem, v_destino)
+        caminho = self.get_menor_caminho(v_origem, v_destino)
         c_form = f"{Fore.YELLOW}{caminho[0]}{Fore.RESET} > "
         for vertice in caminho[1:-1:]:
             c_form += f"{vertice} > "
@@ -512,3 +539,63 @@ class Grafo:
         else:
             print(self._caminho_format(v_origem, v_destino))
             print(f"Distância = {dist[self._vertices.index(v_destino)]}")
+
+    def _inverter_arestas(self):
+        """
+        Método privado para inverter as arestas de um digrafo. Retorna
+        uma copia do grafo com as arestas invertidas.
+        """
+        arestas_invertidas = []
+        if self._valorado:
+            for trio in self._arestas:
+                i, j, p = trio.replace(" ", "").split("-")
+                arestas_invertidas.append(f"{j}-{i}-{p}")
+        else:
+            for par in self._arestas:
+                i, j = par.replace(" ", "").split("-")
+                arestas_invertidas.append(f"{j}-{i}")
+        grafo_invertido = Grafo(self._digrafo, self._valorado, self._vertices,
+                                arestas_invertidas)
+        return grafo_invertido
+
+    def get_q_componente_fortemente_conexos(self):
+        """
+        Retorna a quantidade de componentes fortemente conexos no grafo.
+        """
+        posordem = self.busca_profundidade()['posordem']
+        grafo_invertido = self._inverter_arestas()
+        q_componentes = 0
+        while posordem:
+            visitados = \
+                grafo_invertido._profundidade(posordem[-1])['visitados']
+            for vertice in visitados.nodos:
+                if vertice in posordem:
+                    posordem.remove(vertice)
+            q_componentes += 1
+        return q_componentes
+
+    def fortemente_conexo(self):
+        """
+        Método que retorna verdadeiro se o grafo for fortemente conexo
+        ou falso se não for.
+        """
+        forte = True
+        if self.get_q_componente_fortemente_conexos() > 1:
+            forte = False
+        return forte
+
+    # <editor-fold desc="Métodos para testes">
+    # Métodos abaixo são redundantes, criados apenas para obedecer os
+    # nomes recomendados pelo professor para facilitar testes
+    def getAdjacentes(self, vertice):
+        return self.get_adjacentes(vertice)
+
+    def ehRegular(self):
+        return self.regular()
+
+    def ehCompleto(self):
+        return self.completo()
+
+    def ehConexo(self):
+        return self.conexo()
+    # </editor-fold>

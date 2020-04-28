@@ -53,6 +53,9 @@ Ao final, o programa perguntará se você deseja salvar o grafo para utilizar po
 
 Alternativamente, os valores podem ser incluidos diretamente no arquivo "grafos.json", seguindo o padrão dos exemplos no arquivo, e resgatados utilizando a opção "2 - Resgatar Grafo"
 
+## Implementação dos métodos
+Os métodos chamados pelo programas estão implementados no arquivo 'model/grafo.py'.
+
 ## Autores:
 
 * Felipe Carvalho de Gois

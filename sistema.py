@@ -81,9 +81,9 @@ while True:
                         "a partir do início: ")
         print()
         if vertice:
-            grafo.busca_largura(vertice)
+            grafo.imprimir_busca_largura(vertice)
         else:
-            grafo.busca_largura()
+            grafo.imprimir_busca_largura()
         if not definido:
             grafo = None
         print()
@@ -96,9 +96,9 @@ while True:
                         "a partir do início: ")
         print()
         if vertice:
-            grafo.busca_profundidade(vertice)
+            grafo.imprimir_busca_profundidade(vertice)
         else:
-            grafo.busca_profundidade()
+            grafo.imprimir_busca_profundidade()
         if not definido:
             grafo = None
         print()
