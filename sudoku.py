@@ -37,7 +37,7 @@ def coloracao(grafo):
     return cores
 
 
-lista_cores = grafo_sudoku.coloracao([["v1", "v10"], ["v7"], ["v16"]])
+lista_cores = grafo_sudoku._coloracao([["v1", "v10"], ["v7"], ["v16"]])
 while len(lista_cores) > 4:
     shuffle(grafo_sudoku._vertices)
     lista_cores = coloracao(grafo_sudoku)

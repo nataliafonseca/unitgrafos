@@ -594,9 +594,11 @@ class Grafo:
             forte = False
         return forte
 
-    def coloracao(self, cores_iniciais=None):
+    def _coloracao(self, cores_iniciais=None):
         """
-        Método que aplica coloração ao grafo.
+        Método para colorir ao grafo. O resultado obtido é UMA das
+        soluções possíveis, visto que não existe algoritmo ótimo para
+        coloração.
         """
         if cores_iniciais is None:
             cores = [[]]
@@ -625,10 +627,17 @@ class Grafo:
                 cores.append([vertice])
         return cores
 
-    def coloracao_com_limite(self, cores_iniciais=None, limite=float("Inf")):
-        lista_cores = self.coloracao(cores_iniciais)
+    def coloracao(self, cores_iniciais=None, limite=float("Inf")):
+        """
+        Método para aplicar a coloração ao grafo. Permite que o usuário
+        informe cores iniciais ou um limite de cores (caso seja
+        conhecido) e, caso não encontre uma solução dentro do limite
+        da primeira vez, repete o algoritmo, embaralhando a ordem dos
+        vértices até encontrá-la.
+        """
+        lista_cores = self._coloracao(cores_iniciais)
         while len(lista_cores) > limite:
-            lista_cores = self.coloracao(cores_iniciais)
+            lista_cores = self._coloracao(cores_iniciais)
         return lista_cores
 
     def imprimir_coloracao(self, cores_iniciais=None, limite=float("Inf")):
@@ -636,6 +645,9 @@ class Grafo:
         Imprime a coloração do grafo, formatada para facilitar a
         leitura.
         """
-        for idx, cor in enumerate(self.coloracao_com_limite(cores_iniciais,
-                                                            limite)):
+        for idx, cor in enumerate(self.coloracao(cores_iniciais,
+                                                 limite)):
             print(f"{Fore.YELLOW}COR {idx + 1}:{Fore.RESET} {cor}")
+
+# TODO: Dar novas opções de coloração no sistema principal e atualizar a
+#  documentação!
