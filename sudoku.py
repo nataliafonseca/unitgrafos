@@ -17,6 +17,7 @@ grafo_sudoku = Grafo(False, False,
              "v11-v15", "v11-v16", "v12-v15", "v12-v16", "v13-v14", "v13-v15",
              "v13-v16", "v14-v15", "v14-v16", "v15-v16"])
 
+
 def coloracao(grafo):
     vertices_nao_coloridos = grafo._vertices
 
