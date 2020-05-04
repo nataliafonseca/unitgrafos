@@ -1,8 +1,5 @@
-from colorama import Fore, init as color
 from random import shuffle
 from model.grafo import Grafo
-
-color()
 
 grafo_sudoku = Grafo(False, False,
             ["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10",
@@ -48,4 +45,4 @@ while len(lista_cores) > 4:
     lista_cores = coloracao(grafo_sudoku)
 
 for i in range(4):
-    print(f"{Fore.YELLOW}COR {i + 1}:{Fore.RESET} {lista_cores[i]}")
+    print(f"COR {i + 1}: {lista_cores[i]}")
