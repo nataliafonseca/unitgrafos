@@ -49,7 +49,10 @@ class Grafo:
 
         print(Fore.BLUE + "Informe os vértices do grafo, separando por "
                           "vírgula: " + Fore.RESET)
-        vertices = list(input().replace(" ", "").upper().split(','))
+        _vertices = list(input().upper().split(','))
+        vertices = []
+        for elemento in _vertices:
+            vertices.append(elemento.strip())
         print()
 
         if valorado:
@@ -76,7 +79,10 @@ class Grafo:
                 + Fore.BLUE + ". Por exemplo: "
                 + Fore.YELLOW + "A-B, A-C, A-D, B-C" + Fore.BLUE + "):"
                 + Fore.RESET)
-        arestas = list(input().replace(" ", "").upper().split(','))
+        _arestas = list(input().upper().split(','))
+        arestas = []
+        for elemento in _arestas:
+            arestas.append(elemento.strip())
         print()
 
         return Grafo(digrafo, valorado, vertices, arestas)
@@ -142,7 +148,7 @@ class Grafo:
         Grafo.listar_grafos_salvos()
         with open("grafos.json", "r") as grafos_json:
             print(
-                Fore.BLUE + "Informe a id do grafo que deseja resgatar ("
+                Fore.BLUE + "\nInforme a id do grafo que deseja resgatar ("
                             "para"
                             " evitar erros, copie da lista acima): "
                 + Fore.RESET)
@@ -167,7 +173,7 @@ class Grafo:
         arestas = self._arestas
         if self._valorado:
             for trio in arestas:
-                i, j, p = trio.replace(" ", "").split("-")
+                i, j, p = trio.strip().split("-")
                 p = int(p)
                 estrutura_adjacencia[i].append({'vertice_id': j, 'peso': p})
                 if not self._digrafo:
@@ -177,7 +183,7 @@ class Grafo:
                     self._max_peso = p
         else:
             for par in arestas:
-                i, j = par.replace(" ", "").split("-")
+                i, j = par.strip().split("-")
                 estrutura_adjacencia[i].append({'vertice_id': j, 'peso': 1})
                 if not self._digrafo:
                     estrutura_adjacencia[j].append({'vertice_id': i,
@@ -667,21 +673,3 @@ class Grafo:
         for aresta in self._arestas:
             if aresta.find(vertice):
                 self._arestas.remove(aresta)
-
-    def ordenacao_topologica(self):
-        """
-        Ordena topologicamente os vértices do grafo.
-        """
-        lista_de_saida = []
-        while self._vertices:
-            graus_entrada_por_vertice = {}
-            for vertice in self._vertices:
-                graus_entrada_por_vertice[vertice] = \
-                    self.obter_grau_de_entrada(vertice)
-            for vertice, grau_de_entrada in graus_entrada_por_vertice.items():
-                if grau_de_entrada == 0:
-                    lista_de_saida.append(vertice)
-                    self.remover_do_grafo(vertice)
-        return lista_de_saida
-
-# TODO: Dar novas opções de coloração e ordenação topológica no sistema principal e atualizar a documentação!
