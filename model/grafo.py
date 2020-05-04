@@ -5,6 +5,7 @@ from datetime import datetime
 from jsonpickle import encode, decode
 from colorama import Fore, init as color
 from copy import deepcopy
+from random import shuffle
 
 color()
 
@@ -597,18 +598,22 @@ class Grafo:
         """
         Método que aplica coloração ao grafo.
         """
-
         if cores_iniciais is None:
             cores = [[]]
         else:
-            cores = cores_iniciais
+            cores = deepcopy(cores_iniciais)
 
-        for vertice in self._vertices:
+        lista_vertices = deepcopy(self._vertices)
+        for vertice in lista_vertices:
+            for cor in cores:
+                if vertice in cor:
+                    lista_vertices.remove(vertice)
+        shuffle(lista_vertices)
+
+        for vertice in lista_vertices:
             ha_adjacente = False
             for idx, cor in enumerate(cores):
                 ha_adjacente = False
-                if vertice in cores[idx]:
-                    break
                 for adjacente in self.get_adjacentes(vertice):
                     if adjacente in cores[idx]:
                         ha_adjacente = True
@@ -620,10 +625,17 @@ class Grafo:
                 cores.append([vertice])
         return cores
 
-    def imprimir_coloracao(self):
+    def coloracao_com_limite(self, cores_iniciais=None, limite=float("Inf")):
+        lista_cores = self.coloracao(cores_iniciais)
+        while len(lista_cores) > limite:
+            lista_cores = self.coloracao(cores_iniciais)
+        return lista_cores
+
+    def imprimir_coloracao(self, cores_iniciais=None, limite=float("Inf")):
         """
         Imprime a coloração do grafo, formatada para facilitar a
         leitura.
         """
-        for idx, cor in enumerate(self.coloracao()):
+        for idx, cor in enumerate(self.coloracao_com_limite(cores_iniciais,
+                                                            limite)):
             print(f"{Fore.YELLOW}COR {idx + 1}:{Fore.RESET} {cor}")
