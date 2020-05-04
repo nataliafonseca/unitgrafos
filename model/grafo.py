@@ -649,5 +649,39 @@ class Grafo:
                                                  limite)):
             print(f"{Fore.YELLOW}COR {idx + 1}:{Fore.RESET} {cor}")
 
-# TODO: Dar novas opções de coloração no sistema principal e atualizar a
-#  documentação!
+    def obter_grau_de_entrada(self, vertice_de_entrada):
+        """
+        Encontra o grau de entrada do vértice solicitado.
+        """
+        grau_entrada = 0
+        for vertice in self._vertices:
+            if vertice_de_entrada in self.get_adjacentes(vertice):
+                grau_entrada += 1
+        return grau_entrada
+
+    def remover_do_grafo(self, vertice):
+        """
+        Método para remover uma aresta do grafo
+        """
+        self._vertices.remove(vertice)
+        for aresta in self._arestas:
+            if aresta.find(vertice):
+                self._arestas.remove(aresta)
+
+    def ordenacao_topologica(self):
+        """
+        Ordena topologicamente os vértices do grafo.
+        """
+        lista_de_saida = []
+        while self._vertices:
+            graus_entrada_por_vertice = {}
+            for vertice in self._vertices:
+                graus_entrada_por_vertice[vertice] = \
+                    self.obter_grau_de_entrada(vertice)
+            for vertice, grau_de_entrada in graus_entrada_por_vertice.items():
+                if grau_de_entrada == 0:
+                    lista_de_saida.append(vertice)
+                    self.remover_do_grafo(vertice)
+        return lista_de_saida
+
+# TODO: Dar novas opções de coloração e ordenação topológica no sistema principal e atualizar a documentação!
