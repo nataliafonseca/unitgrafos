@@ -593,22 +593,28 @@ class Grafo:
             forte = False
         return forte
 
-    def coloracao(self):
+    def coloracao(self, cores_iniciais=None):
         """
         Método que aplica coloração ao grafo.
         """
-        cores = [[]]
+
+        if cores_iniciais is None:
+            cores = [[]]
+        else:
+            cores = cores_iniciais
 
         for vertice in self._vertices:
             ha_adjacente = False
-            for idx, lista in enumerate(cores):
+            for idx, cor in enumerate(cores):
                 ha_adjacente = False
+                if vertice in cores[idx]:
+                    break
                 for adjacente in self.get_adjacentes(vertice):
                     if adjacente in cores[idx]:
                         ha_adjacente = True
                         break
                 if not ha_adjacente:
-                    lista.append(vertice)
+                    cor.append(vertice)
                     break
             if ha_adjacente:
                 cores.append([vertice])
@@ -620,4 +626,4 @@ class Grafo:
         leitura.
         """
         for idx, cor in enumerate(self.coloracao()):
-            print(f"{Fore.YELLOW}COR {idx+1}:{Fore.RESET} {cor}")
+            print(f"{Fore.YELLOW}COR {idx + 1}:{Fore.RESET} {cor}")
