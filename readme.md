@@ -55,9 +55,3 @@ Alternativamente, os valores podem ser incluidos diretamente no arquivo "grafos.
 
 ## Implementação dos métodos
 Os métodos chamados pelo programas estão implementados no arquivo 'model/grafo.py'. A documentação desses métodos pode ser acessada no arquivo 'model.grafo.html'.
-
-## Autores:
-
-* Felipe Carvalho de Gois
-* Natália Braga da Fonseca
-* Sande Andrade de Souza Costa

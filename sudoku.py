@@ -18,9 +18,11 @@ grafo_sudoku = Grafo(False, False,
 
 
 def coloracao(grafo):
+    vertices_nao_coloridos = grafo._vertices
+
     cores = [["v1", "v10"], ["v7"], ["v16"], []]
 
-    for vertice in grafo_sudoku._vertices:
+    for vertice in vertices_nao_coloridos:
         ha_adjacente = False
         for idx, cor in enumerate(cores):
             ha_adjacente = False
@@ -39,7 +41,7 @@ def coloracao(grafo):
     return cores
 
 
-lista_cores = grafo_sudoku._coloracao([["v1", "v10"], ["v7"], ["v16"]])
+lista_cores = coloracao(grafo_sudoku)
 while len(lista_cores) > 4:
     shuffle(grafo_sudoku._vertices)
     lista_cores = coloracao(grafo_sudoku)
