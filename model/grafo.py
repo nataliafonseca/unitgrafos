@@ -714,5 +714,5 @@ class Grafo:
 
         print(f"\nPS.: A etapa corresponde aos elementos que estão aptos "
               f"para a utilização logo na primeira iteração. A etapa 2 "
-              f"corresponde àqueles estão disponíveis, no mínimo, na segunda, "
+              f"corresponde àqueles disponíveis, no mínimo, na segunda, "
               f"e assim por diânte...")
