@@ -55,8 +55,6 @@ while fila:
         if not vertices_visitados.localizar_nodo(w):
             vertices_visitados.inserir_nodo(vertice, w)
             fila.append(w)
-    vertices_visitados.imprimir()
-    print()
 
 vertices_visitados.imprimir()
 
