@@ -686,6 +686,8 @@ class Grafo:
         """
         Ordena topologicamente os vértices do grafo.
         """
+        vertices_backup = deepcopy(self._vertices)
+        arestas_backup = deepcopy(self._arestas)
         lista_de_listas = []
         while self._vertices:
             graus_entrada_por_vertice = {}
@@ -698,6 +700,8 @@ class Grafo:
                     lista_de_saida.append(vertice)
                     self.remover_do_grafo(vertice)
             lista_de_listas.append(lista_de_saida)
+        self._vertices = vertices_backup
+        self._arestas = arestas_backup
         return lista_de_listas
 
     def imprimir_ordenacao_topologica(self):
@@ -708,7 +712,7 @@ class Grafo:
         for idx, lista in enumerate(self.ordenacao_topologica()):
             print(f"{Fore.YELLOW}ETAPA {idx + 1}:{Fore.RESET} {lista}")
 
-        print(f"\nPS.: A etapa corresponde aos elementos que estão aptos"
+        print(f"\nPS.: A etapa corresponde aos elementos que estão aptos "
               f"para a utilização logo na primeira iteração. A etapa 2 "
               f"corresponde àqueles estão disponíveis, no mínimo, na segunda, "
               f"e assim por diânte...")

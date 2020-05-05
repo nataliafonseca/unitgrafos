@@ -16,6 +16,7 @@ while True:
                      "Obter Menor Caminho entre Dois Vértices",
                      "Obter Menores Caminhos a partir de um Vértice",
                      "Colorir Grafo",
+                     "Ordenação Topológica",
                      "Sair do sistema"])
 
     if resposta == 1:
@@ -137,6 +138,15 @@ while True:
 
     elif resposta == 12:
         print()
+        cabecalho("Opção 12 - Ordenação Topológica")
+        grafo, definido = teste_grafo_definido(grafo)
+        grafo.imprimir_ordenacao_topologica()
+        if not definido:
+            grafo = None
+        print()
+
+    elif resposta == 13:
+        print()
         cabecalho("Saindo do sistema... Até logo!")
         sleep(1)
         break
@@ -146,4 +156,4 @@ while True:
                          "1 e 11" + Fore.RESET)
         print()
 
-    sleep(1)
+    sleep(2)
