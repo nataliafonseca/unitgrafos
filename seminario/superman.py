@@ -1,4 +1,7 @@
 from model.grafo import Grafo
+from colorama import Fore, init as color
+
+color()
 
 superman = Grafo(True, False, ["1", "2", "3", "4", "5", "6", "7", "8"],
                  ["1-2", "2-6", "3-2", "5-7", "8-5"])
@@ -17,5 +20,6 @@ while superman._vertices:
     lista_de_listas.append(lista_de_saida)
 
 for idx, lista in enumerate(lista_de_listas):
-    print(f"LISTA {idx}:{lista}")
+    print(f"{Fore.YELLOW}LISTA {idx}:{Fore.RESET} {lista}")
 
+input(f"{Fore.YELLOW}\nENTER para finalizar{Fore.RESET}")

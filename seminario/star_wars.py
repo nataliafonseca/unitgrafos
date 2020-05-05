@@ -1,5 +1,8 @@
 from model.grafo import Grafo
 from lib.arvore import Arvore
+from colorama import Fore, init as color
+
+color()
 
 grafo_starwars = Grafo(False, False, ["YODA", "COUNT DOOKU", "QUIN GON JINN",
                                       "OBI WAN KENOBI", "CLIEGG LARS",
@@ -58,4 +61,4 @@ while fila:
 
 vertices_visitados.imprimir()
 
-input()
+input(f"{Fore.YELLOW}\nENTER para finalizar{Fore.RESET}")
