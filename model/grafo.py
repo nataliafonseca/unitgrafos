@@ -140,6 +140,21 @@ class Grafo:
                 grafo.imprimir_informacoes()
 
     @staticmethod
+    def retorna_grafo(grafo_id):
+        """
+        Método que retorna o grafo correspondente à id, caso este esteja
+        no arquivo grafos.json
+        """
+        with open("grafos.json", "r") as grafos_json:
+            for line in grafos_json:
+                grafo = decode(line)
+                if grafo._id_grafo == grafo_id:
+                    return grafo
+            print()
+            print(Fore.RED + "Grafo não encontrado, tente novamente."
+                  + Fore.RESET)
+
+    @staticmethod
     def resgatar_grafo():
         """
         Método que lista os grafos salvos e retorna a instância
@@ -148,19 +163,12 @@ class Grafo:
         Grafo.listar_grafos_salvos()
         with open("grafos.json", "r") as grafos_json:
             print(
-                Fore.BLUE + "\nInforme a id do grafo que deseja resgatar ("
+                Fore.BLUE + "\nInforme a id do grafo que deseja retorna_grafo ("
                             "para"
                             " evitar erros, copie da lista acima): "
                 + Fore.RESET)
             id_r = input().strip()
-
-            for line in grafos_json:
-                grafo = decode(line)
-                if grafo._id_grafo == id_r:
-                    return grafo
-            print()
-            print(Fore.RED + "Grafo não encontrado, tente novamente."
-                  + Fore.RESET)
+            return Grafo.retorna_grafo(id_r)
 
     def estrutura_adjacencia(self):
         """
