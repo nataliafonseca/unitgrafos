@@ -174,7 +174,7 @@ class Grafo:
         if self._valorado:
             for trio in arestas:
                 i, j, p = trio.strip().split("-")
-                p = int(p)
+                p = float(p)
                 estrutura_adjacencia[i].append({'vertice_id': j, 'peso': p})
                 if not self._digrafo:
                     estrutura_adjacencia[j].append({'vertice_id': i,
@@ -218,7 +218,7 @@ class Grafo:
             for trio in arestas:
                 i, j, p = trio.replace(" ", "").split("-")
                 i, j = self._vertices.index(i), self._vertices.index(j)
-                p = int(p)
+                p = float(p)
                 matriz_adjacencia[i][j] = p
                 if not self._digrafo:
                     matriz_adjacencia[j][i] = p
@@ -671,5 +671,36 @@ class Grafo:
         """
         self._vertices.remove(vertice)
         for aresta in self._arestas:
-            if aresta.find(vertice):
+            if aresta.find(vertice) >= 0:
                 self._arestas.remove(aresta)
+
+    def ordenacao_topologica(self):
+        """
+        Ordena topologicamente os vértices do grafo.
+        """
+        lista_de_listas = []
+        while self._vertices:
+            graus_entrada_por_vertice = {}
+            for vertice in self._vertices:
+                graus_entrada_por_vertice[vertice] = \
+                    self.obter_grau_de_entrada(vertice)
+            lista_de_saida = []
+            for vertice, grau_de_entrada in graus_entrada_por_vertice.items():
+                if grau_de_entrada == 0:
+                    lista_de_saida.append(vertice)
+                    self.remover_do_grafo(vertice)
+            lista_de_listas.append(lista_de_saida)
+        return lista_de_listas
+
+    def imprimir_ordenacao_topologica(self):
+        """
+        Imprime a ordenação topológica do grafo, formatada para
+        facilitar a leitura
+        """
+        for idx, lista in enumerate(self.ordenacao_topologica()):
+            print(f"{Fore.YELLOW}LISTA {idx}:{Fore.RESET} {lista}")
+
+        print(f"\nPS.: A lista 0 corresponde aos elementos que estão aptos"
+              f"para a utilização logo de cara. A lista 1 corresponde "
+              f"àqueles que precisam de, pelo menos, 1 iteração, e assim "
+              f"por diânte")

@@ -67,7 +67,7 @@ while True:
         print()
         cabecalho("Opção 6 - Obter Vértices Adjacentes")
         grafo, definido = teste_grafo_definido(grafo)
-        vertice = input("Informe o vértice: ")
+        vertice = input("Informe o vértice: ").upper()
         print()
         print(grafo.get_adjacentes(vertice))
         if not definido:
@@ -94,7 +94,7 @@ while True:
         cabecalho("Opção 8 - Busca em Profundidade")
         grafo, definido = teste_grafo_definido(grafo)
         vertice = input("Informe o vértice incial ou aperte ENTER para buscar "
-                        "a partir do início: ")
+                        "a partir do início: ").upper()
         print()
         if vertice:
             grafo.imprimir_busca_profundidade(vertice)
@@ -108,8 +108,8 @@ while True:
         print()
         cabecalho("Opção 9 - Obter Menor Caminho entre Dois Vértices")
         grafo, definido = teste_grafo_definido(grafo)
-        origem = input("Informe o vértice inicial: ")
-        destino = input("Informe o vértice final: ")
+        origem = input("Informe o vértice inicial: ").upper()
+        destino = input("Informe o vértice final: ").upper()
         print()
         grafo.imprimir_menor_caminho(origem, destino)
         if not definido:
@@ -120,7 +120,7 @@ while True:
         print()
         cabecalho("Opção 10 - Obter Menores Caminhos a partir de um Vértice")
         grafo, definido = teste_grafo_definido(grafo)
-        origem = input("Informe o vértice inicial: ")
+        origem = input("Informe o vértice inicial: ").upper()
         grafo.imprimir_menor_caminho(origem)
         if not definido:
             grafo = None
