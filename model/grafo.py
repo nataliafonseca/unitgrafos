@@ -706,9 +706,9 @@ class Grafo:
         facilitar a leitura
         """
         for idx, lista in enumerate(self.ordenacao_topologica()):
-            print(f"{Fore.YELLOW}LISTA {idx}:{Fore.RESET} {lista}")
+            print(f"{Fore.YELLOW}ETAPA {idx + 1}:{Fore.RESET} {lista}")
 
-        print(f"\nPS.: A lista 0 corresponde aos elementos que estão aptos"
-              f"para a utilização logo de cara. A lista 1 corresponde "
-              f"àqueles que precisam de, pelo menos, 1 iteração, e assim "
-              f"por diânte")
+        print(f"\nPS.: A etapa corresponde aos elementos que estão aptos"
+              f"para a utilização logo na primeira iteração. A etapa 2 "
+              f"corresponde àqueles estão disponíveis, no mínimo, na segunda, "
+              f"e assim por diânte...")
